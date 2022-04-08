@@ -17,7 +17,9 @@ https://vrf.chain.link/rinkeby/2538
 ● Add consumer address (smartcontract address)
 0xc03615aA3c88473d5AE30Aa3553EF2155AF48997
 
-● 実行進ん
+● 実行
+・Run the enter function (three account)
+・Run pickWinner
 
 ①　Chain link Source
 VRFConsumerBaseV2.sol
