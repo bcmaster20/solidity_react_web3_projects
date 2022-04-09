@@ -39,3 +39,9 @@ $ npx hardhat run scripts/deploy.js --network rinkeby
 
 ● let's open site opensea.io
 connect rinkeby metamask address
+
+● mint another token by rinkby
+$ npx hardhat run scripts/mint.js --network rinkeby
+
+● Let's go opensea of profile
+It's appear nft item in profile page of opensea
