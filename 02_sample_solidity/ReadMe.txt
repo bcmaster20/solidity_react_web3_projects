@@ -1,4 +1,4 @@
-1. Lottery.sol
+﻿1. Lottery.sol
 
 
 2. Lottery_w_Cainlink_VRF.sol
@@ -26,3 +26,6 @@ VRFConsumerBaseV2.sol
 VRFCoordinatorV2Interface.sol
 LinkTokenInterface.sol
 https://github.com/smartcontractkit/chainlink/blob/develop/contracts/src/v0.8/VRFConsumerBaseV2.sol
+
+3. Access Control Smart Contract Security
+https://github.com/jspruance/smart-contract-security
