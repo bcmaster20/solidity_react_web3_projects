@@ -14,7 +14,7 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "solc": "^0.8.11",
-    "web3": "^1.7.0"
+    "web3": "^1.7.3"
   },
   "devDependencies": {
     "eslint": "8.7.0",

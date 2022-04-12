@@ -14,7 +14,7 @@ const VendingMachine = () => {
     const [web3, setWeb3] = useState(null)
     const [address, setAddress] = useState(null)
     const [vmContract, setVmContract] = useState(null)
-    const [web3, setWeb3] = useState(null)
+    
 
     useEffect(() => {
       if (vmContract) getInventoryHandler()
@@ -39,9 +39,10 @@ const VendingMachine = () => {
       try {
         await vmContract.methods.purchase(buyCount).send({
           from: address,
-          value: web3.utils.toWei('2', 'ether') * buyCount
+          value: web3.utils.toWei('2', 'ether') * buyCount});
 
-        console.log("try to purchase")
+        // console.log("try to purchase");
+        console.log("bbbb");
         await vmContract.methods.purchase(parseInt(buyCount)).send({
           from: address,
           value: web3.utils.toWei('2', 'ether') * buyCount,
@@ -60,6 +61,7 @@ const VendingMachine = () => {
 
     const connectWalletHandler = async () => {
       /* check if MetaMask is installed */
+      alert("connect wallet", window.ethereum);
       if (typeof window !== "undefined" && typeof window.ethereum !== "undefined") {
           try {
             /* request wallet connect */
@@ -69,7 +71,8 @@ const VendingMachine = () => {
             /* set web3 instance */
             setWeb3(web3)
             /* get list of accounts */
-            const accounts = await web3.eth.getAccounts()
+            const accounts = await web3.eth.getAccounts();
+            console.log(accounts);
             /* set Account 1 to React state var */
             setAddress(accounts[0])
             
@@ -98,7 +101,11 @@ const VendingMachine = () => {
                   <h1>Vending Machine</h1>
                 </div>
                 <div className="navbar-end">
-                    <button onClick={connectWalletHandler} className="button is-primary">Connect Wallet</button>
+                {!address ? (
+                  <button onClick={connectWalletHandler} className="button is-primary">Connect Wallet</button>
+                ) : (
+                  <div>{address}</div>
+                )}
                 </div>
             </div>
           </nav>
