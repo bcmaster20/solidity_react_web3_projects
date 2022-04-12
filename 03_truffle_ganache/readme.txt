@@ -17,7 +17,8 @@ gas ethereum station
 https://ethgasstation.info/
 
 
-Truffle Dapp intergrate our UI
+■ Truffle Dapp intergrate our UI
+https://www.youtube.com/watch?v=Qu6GloG0dQk&list=PLD_RqipW0-9tzS2HFvem3GAG_at4aoZa3&index=11
 
 $ npx create-next-app vending-machine-app
 $ npm i bulma
