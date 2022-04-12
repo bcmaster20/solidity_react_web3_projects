@@ -38,6 +38,15 @@ const abi = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{
 const vendingMachineContract = new web3.eth.Contract(abi, "0xCd44c67F8f8B0F10D2A955F5B6B5E6Cc36437E07");
 export default vendingMachineContract
 
+⇒
+const vendingMachineContract = (web3) => {
+  return new web3.eth.Contract(
+    vendingMachineABI,
+    "0xCd44c67F8f8B0F10D2A955F5B6B5E6Cc36437E07"
+  )
+}
+
+export default vendingMachineContract
 
 
 https://rinkeby.infura.io/v3/75c8616a13e942e08f55951b33d8c1a6
