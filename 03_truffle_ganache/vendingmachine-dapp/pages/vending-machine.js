@@ -14,7 +14,7 @@ const VendingMachine = () => {
     const [web3, setWeb3] = useState(null)
     const [address, setAddress] = useState(null)
     const [vmContract, setVmContract] = useState(null)
-    
+    const [purchases, setPurchases] = useState(0);
 
     useEffect(() => {
       if (vmContract) getInventoryHandler()
@@ -50,6 +50,7 @@ const VendingMachine = () => {
           gasPrice: null
 
         })
+        setPurchases(purchases)
         setSuccessMsg(`${buyCount} donuts purchased!`)
 
         if (vmContract) getInventoryHandler()
