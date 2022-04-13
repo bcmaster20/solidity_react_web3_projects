@@ -32,3 +32,4 @@ https://github.com/jspruance/smart-contract-security
 
 3. Smart Contract Tutorial | Create a Safe Remote Purchase Ethereum Smart Contract with Solidity
 Using the Remix.
+
