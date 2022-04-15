@@ -41,7 +41,22 @@ State: Locked
 ③ B.transfer(value) +2 confirm Receive
 State: Release
 
-④　
+Smart Contracts 101 - Simple Ether Wallet Smart Contract Tutorial
+https://www.youtube.com/watch?v=UoGzV094jhE&list=PLD_RqipW0-9tzS2HFvem3GAG_at4aoZa3&index=13　
 
+ // This function is called for plain Ether transfers, i.e.
+ // for every call with empty calldata.
+receive() external payable {}
+
+---
+It will allow our smart contract to receive ether or receive.
+Remix: After it have deployed smartcontract, It can be run the "Low level interactions" function.
+
+// This function is called for all messages sent to
+// this contract, except plain Ether transfers
+// (there is no other function except the receive function).
+// Any call with non-empty calldata to this contract will execute
+// the fallback function (even if Ether is sent along with the call).
+fallback() external payable { x = 1; y = msg.value; }
 
 
