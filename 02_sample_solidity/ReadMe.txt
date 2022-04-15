@@ -32,4 +32,16 @@ https://github.com/jspruance/smart-contract-security
 
 3. Smart Contract Tutorial | Create a Safe Remote Purchase Ethereum Smart Contract with Solidity
 Using the Remix.
+SafeRemotePurchase.sol
+
+① A: 0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2 4 ether deployed seller
+State: Created
+② B: 0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db 4 ether confirmPurchase buyer
+State: Locked
+③ B.transfer(value) +2 confirm Receive
+State: Release
+
+④　
+
+
 
