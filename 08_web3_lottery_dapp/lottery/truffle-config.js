@@ -4,7 +4,8 @@ const HDWalletProvider = require("@truffle/hdwallet-provider")
 const private_keys = [
   process.env.PRIVATE_KEY_1
 ];
-
+console.log(private_keys);
+console.log(process.env.INFURA_API_KEY);
 /**
  * Use this file to configure your truffle project. It's seeded with some
  * common settings for different networks and features like migrations,
