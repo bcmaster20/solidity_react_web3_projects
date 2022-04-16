@@ -18,3 +18,9 @@ $ npm install @chainlink/contracts@latest --save
 $ npx truffle migrate --network rinkeby
 ⇒ 0x6be8Cd276626E9B971D7FDdAaEeB93e5758d52FF
 
+
+■ lottery-dapp
+I'll add the compile option of "compile" in package.json's scripts block
+ "compile": "solcjs --abi --include-path node_modules/ --base-path . blockchain/contracts/Lottery.sol --output-dir blockchain/build"
+
+$ npm install solc --save

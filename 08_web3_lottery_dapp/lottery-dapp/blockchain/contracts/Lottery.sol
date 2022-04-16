@@ -1,39 +1,82 @@
 // SPDX-License-Identifier: MIT
-
+// An example of a consumer contract that relies on a subscription for funding.
 pragma solidity ^0.8.11;
 
-import "@chainlink/contracts/src/v0.8/VRFConsumerBase.sol";
+import "@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol";
+import "@chainlink/contracts/src/v0.8/VRFConsumerBaseV2.sol";
 
-contract Lottery is VRFConsumerBase {
-    address public owner;
-    address payable[] public players;
-    uint public lotteryId;
-    mapping (uint => address payable) public lotteryHistory;
+contract Lottery is VRFConsumerBaseV2 {
+  VRFCoordinatorV2Interface COORDINATOR;
 
-    bytes32 internal keyHash; // identifies which Chainlink oracle to use
-    uint internal fee;        // fee to get random number
-    uint public randomResult;
+  // Your subscription ID.
+  uint64 s_subscriptionId;
 
-    constructor()
-        VRFConsumerBase(
-            0xb3dCcb4Cf7a26f6cf6B120Cf5A73875B7BBc655B, // VRF coordinator
-            0x01BE23585060835E02B77ef475b0Cc51aA1e0709  // LINK token address
-        ) {
-            keyHash = 0x2ed0feb3e7fd2022120aa84fab1945545a9f2ffc9076fd6156fa96eaff4c1311;
-            fee = 0.1 * 10 ** 18;    // 0.1 LINK
+  // Rinkeby coordinator. For other networks,
+  // see https://docs.chain.link/docs/vrf-contracts/#configurations
+  address vrfCoordinator = 0x6168499c0cFfCaCD319c818142124B7A15E857ab;
 
-            owner = msg.sender;
-            lotteryId = 1;
-        }
+  // The gas lane to use, which specifies the maximum gas price to bump to.
+  // For a list of available gas lanes on each network,
+  // see https://docs.chain.link/docs/vrf-contracts/#configurations
+  bytes32 keyHash = 0xd89b2bf150e3b9e13446986e571fb9cab24b13cea0a43ea20a6049a85cc807cc;
 
-    function getRandomNumber() public returns (bytes32 requestId) {
-        require(LINK.balanceOf(address(this)) >= fee, "Not enough LINK in contract");
-        return requestRandomness(keyHash, fee);
-    }
+  // Depends on the number of requested values that you want sent to the
+  // fulfillRandomWords() function. Storing each word costs about 20,000 gas,
+  // so 100,000 is a safe default for this example contract. Test and adjust
+  // this limit based on the network that you select, the size of the request,
+  // and the processing of the callback request in the fulfillRandomWords()
+  // function.
+  uint32 callbackGasLimit = 100000;
 
-    function fulfillRandomness(bytes32 requestId, uint randomness) internal override {
-        randomResult = randomness;
-    }
+  // The default is 3, but you can set this higher.
+  uint16 requestConfirmations = 3;
+
+  // For this example, retrieve 2 random values in one request.
+  // Cannot exceed VRFCoordinatorV2.MAX_NUM_WORDS.
+  uint32 numWords =  2;
+
+  uint256[] public s_randomWords;
+  uint256 public s_requestId;
+  address s_owner;
+
+  address payable[] public players;
+  uint public lotteryId;
+  mapping (uint => address payable) public lotteryHistory;  
+
+  constructor(uint64 subscriptionId) VRFConsumerBaseV2(vrfCoordinator) {
+    COORDINATOR = VRFCoordinatorV2Interface(vrfCoordinator);
+    s_owner = msg.sender;
+    s_subscriptionId = subscriptionId;
+    lotteryId = 1;
+  }
+
+  // Assumes the subscription is funded sufficiently.
+  function requestRandomWords() external onlyOwner {
+    // Will revert if subscription is not set and funded.
+    s_requestId = COORDINATOR.requestRandomWords(
+      keyHash,
+      s_subscriptionId,
+      requestConfirmations,
+      callbackGasLimit,
+      numWords
+    );
+  }
+  
+  function getRandomNumber() public onlyOwner returns(uint256) {
+      return COORDINATOR.requestRandomWords(
+      keyHash,
+      s_subscriptionId,
+      requestConfirmations,
+      callbackGasLimit,
+      numWords
+    );
+  }
+  function fulfillRandomWords(
+    uint256, /* requestId */
+    uint256[] memory randomWords
+  ) internal override {
+    s_randomWords = randomWords;
+  }
 
     function getWinnerByLottery(uint lottery) public view returns (address payable) {
         return lotteryHistory[lottery];
@@ -46,7 +89,6 @@ contract Lottery is VRFConsumerBase {
     function getPlayers() public view returns (address payable[] memory) {
         return players;
     }
-
     function enter() public payable {
         require(msg.value > .01 ether);
 
@@ -54,25 +96,25 @@ contract Lottery is VRFConsumerBase {
         players.push(payable(msg.sender));
     }
 
-    function pickWinner() public onlyowner {
-        getRandomNumber();
-    }
+    // function getRandomNumber() public view returns (uint) {
+    //     requestRandomWords();
+    //     return uint(s_requestId);
+    // }
 
-    function payWinner() public {
-        require(randomResult > 0, "Must have a source of randomness before choosing winner");
-        uint index = randomResult % players.length;
+    function pickWinner() public onlyOwner {
+        uint index = getRandomNumber() % players.length;
         players[index].transfer(address(this).balance);
 
         lotteryHistory[lotteryId] = players[index];
         lotteryId++;
         
+
         // reset the state of the contract
         players = new address payable[](0);
-        randomResult = 0;
     }
 
-    modifier onlyowner() {
-      require(msg.sender == owner);
-      _;
-    }
+  modifier onlyOwner() {
+    require(msg.sender == s_owner);
+    _;
+  }
 }
