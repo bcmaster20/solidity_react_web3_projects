@@ -2,7 +2,7 @@
 pragma solidity ^0.8.10;
 // Gas Saving Techniques
 
-// ・Some gas saving techniques.
+// Some gas saving techniques.
 // ・Replacing memory with calldata
 // ・Loading state variable to memory
 // ・Replace for loop i++ with ++i
