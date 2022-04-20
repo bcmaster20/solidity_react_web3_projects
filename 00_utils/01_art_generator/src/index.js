@@ -15,7 +15,7 @@ const template = `
 
 const takenNames = {};
 const takenFaces = {};
-let idx = 999;
+let idx = 50;
 
 function randInt(max) {
     return Math.floor(Math.random() * (max + 1));
