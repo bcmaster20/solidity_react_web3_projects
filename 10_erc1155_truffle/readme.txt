@@ -29,6 +29,13 @@ cid: QmUWjViBSCnYAP5anDaL4tCQPu9dDFtfjHvgVcvZZh3xU1
 
 3. Deploying contract with Remix editor and Metamask
 ・Connect the InjectWeb3 and Deploy
-・Create Script/mint.js
+0xb9c9Db54f98A365B99fFCE4e876D9EffF5b6d1D0
+
+・Run Script/bulk_mint_nfts.js
+・Run Script/estimate_gas_fee.js
+It's gas fee reference url.
+https://ethereum.stackexchange.com/questions/68816/is-the-gas-price-on-test-net-equal-to-main-net
+
+・Test Open Sea
 
 
