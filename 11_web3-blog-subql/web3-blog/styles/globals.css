@@ -14,3 +14,31 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.EasyMDEContainer .editor-toolbar {
+  border: none;
+}
+
+.EasyMDEContainer .CodeMirror {
+  border: none !important;
+  background: none;
+}
+
+.editor-preview {
+  background-color: white !important;
+}
+
+.CodeMirror .cm-spell-error:not(.cm-url):not(.cm-comment):not(.cm-tag):not(.cm-word) {
+  background-color: transparent !important;
+}
+
+pre {
+  padding: 20px;
+  background-color: #efefef;
+}
+
+blockquote {
+  border-left: 5px solid #ddd;
+  padding-left: 20px;
+  margin-left: 0px;
+}

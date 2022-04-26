@@ -1,13 +1,13 @@
 require("@nomiclabs/hardhat-waffle");
-
+require('dotenv').config();
 module.exports = {
   solidity: "0.8.4",
   networks: {
     hardhat: {
       chainId: 1337
     },
-    mumbai: {
-      url: "https://rpc-mumbai.matic.today",
+    rinkeby: {
+      url: "https://eth-rinkeby.alchemyapi.io/v2/K41PqDfGFUFQ_5J9oPwoIETgMHwPdBe9",
       accounts: [process.env.pk]
     },
     // polygon: {
