@@ -7,7 +7,7 @@ module.exports = {
       chainId: 1337
     },
     rinkeby: {
-      url: "https://eth-rinkeby.alchemyapi.io/v2/K41PqDfGFUFQ_5J9oPwoIETgMHwPdBe9",
+      url: `${process.env.NEXT_API_KEY}`,
       accounts: [process.env.pk]
     },
     // polygon: {

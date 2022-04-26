@@ -3,7 +3,7 @@ The video course for this codebase is located [here](https://www.youtube.com/wat
 
 
 
-## 1. Create Hardhat and Next.js Project
+## 1. Create Hardhat, Next.js Project and Deploy Rinkeby
 ```shell
 (npm install --save-exact --save react react-dom next)
 $ npx create-next-app web3-blog --use-npm
@@ -22,5 +22,13 @@ Blog deployed to: 0xeeE9D237512BAaC63f601e1B2cAbc6F9e1808d8D
 
 ## 2. Configration Context js
 import { createContext } from 'react'
-
 export const AccountContext = createContext(null)
+
+## 3. Alchemy or Infura Connects to Ethereum with RPC
+https://dev.to/hideckies/ethers-js-cheat-sheet-1h5j
+
+```shell
+const provider = new ethers.provider.JsonRpcProvider(`url`);
+Alchemy	https://<network>.alchemyapi.io/v2/YOUR-API-KEY
+Infura	https://<network>.infura.io/v3/YOUR-PROJECT-ID
+```
