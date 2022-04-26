@@ -32,3 +32,47 @@ const provider = new ethers.provider.JsonRpcProvider(`url`);
 Alchemy	https://<network>.alchemyapi.io/v2/YOUR-API-KEY
 Infura	https://<network>.infura.io/v3/YOUR-PROJECT-ID
 ```
+```shell
+Chain ID	Network
+1	Mainnet
+3	Ropsten
+4	Rinkeby
+5	Goerli
+10	Optimism
+42	Kovan
+56	BSC
+137	Polygon
+42161	Arbitrum One
+43114	Avalanche
+```
+## 4. Create a Post
+```shell
+/* define the ipfs endpoint */
+const client = create('https://ipfs.infura.io:5001/api/v0')
+
+/* configure the markdown editor to be client-side import */
+const SimpleMDE = dynamic(
+  () => import('react-simplemde-editor'),
+  { ssr: false }
+)
+
+/* For Alchemy */
+async function getWeb3Modal() {
+  const web3Modal = new Web3Modal({
+    network: 'rinkeby',
+    cacheProvider: false,
+    providerOptions: {
+      walletconnect: {
+        package: WalletConnectProvider,
+        options: { 
+          // infuraId: process.env.NEXT_PUBLIC_INFURA_ID
+          rpc: {
+            4: process.env.NEXT_API_Key
+          }
+        },
+      },
+    },
+  })
+  return web3Modal
+}
+```
