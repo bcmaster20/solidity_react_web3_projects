@@ -1,4 +1,4 @@
-This codebase goes along with the tutorial [The Complete Guide to Full Stack Web3 Development](https://dev.to/edge-and-node/the-complete-guide-to-full-stack-web3-development-4g74)
+This codebase goes along with the tutorial [The Complete Guide to Full Stack Web3 Development](https://dev.to/edge-and-node/the-complete-guide-to-full-stack-web3-development-4g74)<br />
 The video course for this codebase is located [here](https://www.youtube.com/watch?v=nRMo5jjgCr4&list=PLSMvK3DkHvw9GXfpyY2MZuM56rA06bOzS&index=12)
 
 ## 1. Create Hardhat, Next.js Project and Deploy Rinkeby
