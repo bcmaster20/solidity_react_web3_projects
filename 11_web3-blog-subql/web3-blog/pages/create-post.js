@@ -127,6 +127,10 @@ import {
                 onClick={triggerOnChange}
                 className={button}
               >Add cover image</button>
+              <button
+                onClick={triggerOnChange}
+                className={button}
+              >Call Subgraph</button>
             </>
           )
         }
