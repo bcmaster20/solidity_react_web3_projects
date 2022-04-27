@@ -1,0 +1,16 @@
+{
+  "name": "jayblog",
+  "license": "UNLICENSED",
+  "scripts": {
+    "codegen": "graph codegen",
+    "build": "graph build",
+    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ jaylee923/jayblog",
+    "create-local": "graph create --node http://localhost:8020/ jaylee923/jayblog",
+    "remove-local": "graph remove --node http://localhost:8020/ jaylee923/jayblog",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 jaylee923/jayblog"
+  },
+  "dependencies": {
+    "@graphprotocol/graph-cli": "0.29.0",
+    "@graphprotocol/graph-ts": "0.26.0"
+  }
+}
