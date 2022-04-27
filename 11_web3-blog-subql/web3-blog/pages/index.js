@@ -12,7 +12,24 @@ import {
 
 /* import Application Binary Interface (ABI) */
 import Blog from '../artifacts/contracts/Blog.sol/Blog.json'
+import {ApolloClient, InMemoryCache, gql} from '@apollo/client';
+export const POST_QUERY = `
+  query{
+    postSearch(text: "one") {
+      id
+      title
+      contentHash
+      published
+      postContent
+    }
+  }
+`;
 
+const endpoint = 'https://api.thegraph.com/subgraphs/name/jaylee923/jayblog'
+const client = new ApolloClient({
+  uri: endpoint,
+  cache: new InMemoryCache(),
+});
 export default function Home(props) {
   /* posts are fetched server side and passed in as props */
   /* see getServerSideProps */
@@ -78,6 +95,9 @@ export async function getServerSideProps() {
   } else {
     provider = new ethers.providers.JsonRpcProvider('https://polygon-rpc.com/')
   }
+
+  let query = await client.query({query: gql(POST_QUERY)});
+  console.log(query.data);
 
 
   const contract = new ethers.Contract(contractAddress, Blog.abi, provider)

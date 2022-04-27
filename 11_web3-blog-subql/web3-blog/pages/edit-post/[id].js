@@ -5,7 +5,7 @@ import { css } from '@emotion/css'
 import dynamic from 'next/dynamic'
 import { ethers } from 'ethers'
 import { create } from 'ipfs-http-client'
-
+import { AccountContext } from '../../context'
 import {
   contractAddress
 } from '../../config'
@@ -33,7 +33,8 @@ export default function Post() {
     /* we first fetch the individual post by ipfs hash from the network */
     if (!id) return
     let provider
-    provider = new ethers.providers.JsonRpcProvider(`${process.env.NEXT_API_KEY}`)    
+    provider = new ethers.providers.JsonRpcProvider(`https://eth-rinkeby.alchemyapi.io/v2/K41PqDfGFUFQ_5J9oPwoIETgMHwPdBe9`)    
+      // provider = new ethers.providers.JsonRpcProvider(`${process.env.NEXT_API_KEY}`)
     console.log(process.env)
     // if (process.env.ENVIRONMENT === 'local') {
     //   provider = new ethers.providers.JsonRpcProvider()

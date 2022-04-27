@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@apollo/client": "^3.6.0",
     "@emotion/css": "^11.9.0",
     "@nomiclabs/hardhat-ethers": "^2.0.5",
     "@nomiclabs/hardhat-waffle": "^2.0.3",
@@ -19,6 +20,7 @@
     "easymde": "^2.16.1",
     "ethereum-waffle": "^3.4.4",
     "ethers": "^5.6.4",
+    "graphql": "^16.4.0",
     "hardhat": "^2.9.3",
     "ipfs-http-client": "^56.0.2",
     "next": "12.1.5",
