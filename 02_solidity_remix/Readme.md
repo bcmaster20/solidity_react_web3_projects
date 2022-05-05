@@ -1,8 +1,8 @@
-﻿1. Lottery.sol
+﻿## 1. Lottery.sol
+[link]()
 
-
-2. Lottery_w_Cainlink_VRF.sol
-https://www.youtube.com/watch?v=_aXumgdpnPU&list=PLD_RqipW0-9tzS2HFvem3GAG_at4aoZa3&index=6
+## 2. Lottery_w_Cainlink_VRF.sol
+[link](https://www.youtube.com/watch?v=_aXumgdpnPU&list=PLD_RqipW0-9tzS2HFvem3GAG_at4aoZa3&index=6)
 
 
 ■ 参考サイト
@@ -25,12 +25,12 @@ https://vrf.chain.link/rinkeby/2538
 VRFConsumerBaseV2.sol
 VRFCoordinatorV2Interface.sol
 LinkTokenInterface.sol
-https://github.com/smartcontractkit/chainlink/blob/develop/contracts/src/v0.8/VRFConsumerBaseV2.sol
+[Src](https://github.com/smartcontractkit/chainlink/blob/develop/contracts/src/v0.8/VRFConsumerBaseV2.sol)
 
-3. Access Control Smart Contract Security
+## 3. Access Control Smart Contract Security
 https://github.com/jspruance/smart-contract-security
 
-3. Smart Contract Tutorial | Create a Safe Remote Purchase Ethereum Smart Contract with Solidity
+## 4. Smart Contract Tutorial | Create a Safe Remote Purchase Ethereum Smart Contract with Solidity
 Using the Remix.
 SafeRemotePurchase.sol
 
