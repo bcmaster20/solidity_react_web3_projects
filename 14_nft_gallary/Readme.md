@@ -15,5 +15,9 @@ App.js
 import 'bootstrap/dist/css/bootstrap.min.css';
 ```
 
+## IPFS DESKTOP Install and Prepare NFT Metadata File.
+Download press [Link](https://github.com/ipfs/ipfs-desktop)
+(IPFS-Desktop-Setup-0.20.5.exe)
+
 ```shell
 ```

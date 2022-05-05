@@ -1,0 +1,20 @@
+{
+    "name": "Jay2Dev NFT Collection NFT #7",
+    "description": "Jay2Dev our first Web3 dApp NFT Collection. This unique collection 1 of 1000 NFTs available",
+    "image": "ipfs://QmbHKcHrxrJA9xPmWEGrBQzvcBqGha9skV41ghc9B3e9xG/7.png",
+    "edition": 7,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "Green4"
+      },
+      {
+        "trait_type": "Head",
+        "value": "Green4"
+      },
+      {
+        "trait_type": "Neck",
+        "value": "Green4"
+      }
+    ]
+  }
