@@ -1,9 +1,9 @@
 # Web3 & Solidity Simple Sample
 ## 1. Send ETH payments using React.js/Metamask
-[CodeBase](https://codesandbox.io/s/react-eth-metamask-7vuy7) 
+[Code](https://codesandbox.io/s/react-eth-metamask-7vuy7) | [Link](https://www.youtube.com/watch?v=QJZUItAsdfg)
 
 ## 2. Sign and Verify messages with React.js and MetaMask
-[CodeBase](https://codesandbox.io/s/react-eth-metamask-signatures-ibuxj) 
+[Code](https://codesandbox.io/s/react-eth-metamask-signatures-ibuxj) 
 
 ### Sign Message
 ```shell
@@ -19,4 +19,5 @@
     if (signerAddr !== address) {
       return false;
     }
-```    
+```
+
