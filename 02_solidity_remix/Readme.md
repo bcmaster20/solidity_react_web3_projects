@@ -41,7 +41,36 @@ State: Locked
 - B.transfer(value) +2 confirm Receive
 State: Release
 
-## 4 ERC1165
+## 4. ERC1165
+Remember interfaceId = xor of all selectors (methods) name and param type, don't care to return type
 
+- Return zero with empty interface
+- Return same id with difference return type
+- Return same id with difference param name
+```shell
+interface ITest {
+    function isERC1155(address nftAddress) external returns (bool);
+    function isERC721(address nftAddress) external returns (bool);
+}
 
+contract Test is ITest, IERC165 {
+    using ERC165Checker for address;
+    bytes4 public constant IID_ITEST = type(ITest).interfaceId;
+    bytes4 public constant IID_IERC165 = type(IERC165).interfaceId;
+    bytes4 public constant IID_IERC1155 = type(IERC1155).interfaceId;
+    bytes4 public constant IID_IERC721 = type(IERC721).interfaceId;
+    
+    function isERC1155(address nftAddress) external view override returns (bool) {
+        return nftAddress.supportsInterface(IID_IERC1155);
+    }    
+    
+    function isERC721(address nftAddress) external view override returns (bool) {
+        return nftAddress.supportsInterface(IID_IERC721);
+    }
+    
+    function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {
+        return interfaceId == IID_ITEST || interfaceId == IID_IERC165;
+    }
+}
+```
 
