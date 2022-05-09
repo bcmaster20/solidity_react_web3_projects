@@ -41,7 +41,7 @@ contract  Marketplace is ERC1155Holder {
 
     /// @notice It will list the NFT to marketplace.
     /// @dev It will list NFT minted from MFTMint contract.        
-    function listNft(uint256 nftId,uint256 amount, uint256 price, uint256 royalty) public {
+    function listNft(uint256 nftId,uint256 amount, uint256 price, uint256 royalty) public payable{
 
         require(nftId > 0, "Token doesnot exist");
         require(royalty >= 0, 'royalty should be between 0 to 30');
