@@ -60,7 +60,7 @@ describe('NFTMarketPlace', function () {
     mbalance_owner = await nftMint.balanceOf(owner.address, 1);
     console.log("mbalance_owner = ", mbalance_owner);
     // await nftMint.setApprovalForAll(owner.address, true);
-    await marketplace.buyNFT(1, 5, {value : ethers.utils.parseEther("5")});
+    // await marketplace.buyNFT(1, 5, {value : ethers.utils.parseEther("5")});
     // market_balance  = await nftMint.balanceOf(marketplaceAddress, 1);
     // console.log("market_balance = ", market_balance);
     // mbalance_owner = await nftMint.balanceOf(owner.address, 1);
