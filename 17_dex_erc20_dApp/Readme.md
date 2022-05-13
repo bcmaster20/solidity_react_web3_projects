@@ -101,5 +101,21 @@ Rinkeby Comp:  0x07196900D4A13622f50aBa97A9DE2b50Ffc549ea
 Rinkeby Dex:  0x8aC7fFcb2bB0E63B4B5AeB67a2Aa42f5e0DcaF46
 ```
 
+### Migrate Binance
+```
+  btestnet: {
+    provider: () => new HDWalletProvider({
+      privateKeys: [private_key],
+      providerOrUrl: 'https://data-seed-prebsc-1-s1.binance.org:8545',
+      numberOfAddresses: 1
+      }
+    ),
+    network_id: 97,
+    skipDryRun: true,
+    networkCheckTimeout: 10000000
+  },  		  
+```
+
+
 
 

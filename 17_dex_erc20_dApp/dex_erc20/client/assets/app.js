@@ -4,10 +4,23 @@ let web3, user, dexInst, tokenInst;
 let priceData;
 let finalInput, finalOutput;
 
-const linkAddr = "0x7F2b2f7e1Ec50967c65866C9d3b1DE0d3Aa8DB52";
-const daiAddr = "0x8d921E11AD879B8f6642F164bDa3b21605D758d8";
+// Binance
+const daiAddr = "0x909EFA0B026a2c6D37D9d9a7e507eeA9D091197A";
+const linkAddr = "0x530b1a6e62a8167936Ca6a1A80E8E64BCcD64950";
 const compAddr = "0x07196900D4A13622f50aBa97A9DE2b50Ffc549ea";
-const dexAddr = "0x8aC7fFcb2bB0E63B4B5AeB67a2Aa42f5e0DcaF46";
+const dexAddr = "0xB295A2fb002763bd5d1cf6E1821D2cd582993AB7";
+
+
+// const dai_address = '0x909EFA0B026a2c6D37D9d9a7e507eeA9D091197A';
+// const link_address = '0x530b1a6e62a8167936Ca6a1A80E8E64BCcD64950';
+// const comp_address = '0x8e9CB9c8F54c6Db908731076e9A48903B849d585';
+// const dex_address = '0xB295A2fb002763bd5d1cf6E1821D2cd582993AB7';
+
+// Rinkeby
+// const daiAddr = "0x8d921E11AD879B8f6642F164bDa3b21605D758d8";
+// const linkAddr = "0x7F2b2f7e1Ec50967c65866C9d3b1DE0d3Aa8DB52";
+// const compAddr = "0x07196900D4A13622f50aBa97A9DE2b50Ffc549ea";
+// const dexAddr = "0x8aC7fFcb2bB0E63B4B5AeB67a2Aa42f5e0DcaF46";
 
 $(document).on("click", ".dropdown-menu li a", function () {
   let element = $(this);

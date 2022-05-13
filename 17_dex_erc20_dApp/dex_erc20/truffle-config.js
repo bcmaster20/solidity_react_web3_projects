@@ -66,6 +66,17 @@ module.exports = {
       skipDryRun: true, // Skip dry run before migrations? (default: false for public nets )
       networkCheckTimeout: 10000000
   },
+  btestnet: {
+    provider: () => new HDWalletProvider({
+      privateKeys: [private_key],
+      providerOrUrl: 'https://data-seed-prebsc-1-s1.binance.org:8545',
+      numberOfAddresses: 1
+      }
+    ),
+    network_id: 97,
+    skipDryRun: true,
+    networkCheckTimeout: 10000000
+  },  		  
 
     // Another network with more advanced options...
     // advanced: {
