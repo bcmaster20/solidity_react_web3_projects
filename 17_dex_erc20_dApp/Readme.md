@@ -50,3 +50,13 @@ npm install chai chai-bn truffle-assertions
 truffle(develop)> test
 ``` 
 
+## 4. Client
+- Install Live Server go live http://localhost:5500/
+```
+npm i web3
+truffle console
+truffle(develop)> migrate --reset
+```
+
+
+
