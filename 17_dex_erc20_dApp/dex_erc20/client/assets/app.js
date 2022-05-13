@@ -1,20 +1,39 @@
 let buyMode = true;
 let token = undefined;
-let web3, user;
+let web3, user, dexInst, tokenInst;
 let priceData;
+let finalInput, finalOutput;
 
-$(document).on('click', ".dropdown-menu li a", function () {
+const linkAddr = "0x7F2b2f7e1Ec50967c65866C9d3b1DE0d3Aa8DB52";
+const daiAddr = "0x8d921E11AD879B8f6642F164bDa3b21605D758d8";
+const compAddr = "0x07196900D4A13622f50aBa97A9DE2b50Ffc549ea";
+const dexAddr = "0x8aC7fFcb2bB0E63B4B5AeB67a2Aa42f5e0DcaF46";
+
+$(document).on("click", ".dropdown-menu li a", function () {
   let element = $(this);
   let img = element[0].firstElementChild.outerHTML;
   let text = $(this).text();
+  token = text.replace(/\s/g, "");
+  if (user) {
+    switch (token) {
+      case "DAI":
+        tokenInst = new web3.eth.Contract(abi.token, daiAddr, { from: user });
+        break;
+      case "LINK":
+        tokenInst = new web3.eth.Contract(abi.token, linkAddr, { from: user });
+        break;
+      case "COMP":
+        tokenInst = new web3.eth.Contract(abi.token, compAddr, { from: user });
+        break;
+    }
+  }
   $(".input-group .btn").html(img + text);
   $(".input-group .btn").css("color", "#fff");
   $(".input-group .btn").css("font-size", "large");
-  token = text.replace(/\s/g, "");
 });
 
 $(document).ready(async () => {
-  if(window.ethereum){
+  if (window.ethereum) {
     web3 = new Web3(Web3.givenProvider);
   }
   priceData = await getPrice();
@@ -27,39 +46,49 @@ $(".btn.login").click(async () => {
       method: "eth_requestAccounts",
     });
     user = accounts[0];
+    dexInst = new web3.eth.Contract(abi.dex, dexAddr, { from: user });
     $(".btn.login").html("Connected");
     $(".btn.swap").html("Enter an amount");
     $("#username").html(user);
-  } catch (error){
+  } catch (error) {
     alert(error.message);
   }
-})
+});
 
-$("#swap-box").submit((e)=>{
+$("#swap-box").submit(async (e) => {
   e.preventDefault();
-})
 
-$("#arrow-box h2").click(()=>{
-  if(buyMode){
+  try {
+    buyMode ? await buyToken() : await sellToken();
+  } catch (err) {
+    alert(err.message);
+  }
+});
+
+$("#arrow-box h2").click(() => {
+  if (buyMode) {
     buyMode = false;
     sellTokenDisplay();
-  }else{
+  } else {
     buyMode = true;
     buyTokenDisplay();
   }
 });
 
 $("#input").on("input", async function () {
-  if(token === undefined){
+  if (token === undefined) {
     return;
   }
   const input = parseFloat($(this).val());
-
   await updateOutput(input);
 });
 
-async function getPrice(){
-  const daiData = await (await fetch("https://api.coingecko.com/api/v3/simple/price?ids=dai&vs_currencies=eth")).json();
+async function getPrice() {
+  const daiData = await (
+    await fetch(
+      "https://api.coingecko.com/api/v3/simple/price?ids=dai&vs_currencies=eth"
+    )
+  ).json();
 
   const compData = await (
     await fetch(
@@ -76,13 +105,13 @@ async function getPrice(){
   return {
     daiEth: daiData.dai.eth,
     linkEth: linkData.chainlink.eth,
-    compEth: compData["compound-governance-token"].eth
-  }
+    compEth: compData["compound-governance-token"].eth,
+  };
 }
 
-async function updateOutput(input){
+async function updateOutput(input) {
   let output;
-  switch(token){
+  switch (token) {
     case "COMP":
       output = buyMode ? input / priceData.compEth : input * priceData.compEth;
       break;
@@ -93,16 +122,13 @@ async function updateOutput(input){
       output = buyMode ? input / priceData.daiEth : input * priceData.daiEth;
       break;
   }
-
-  console.log(output);
-
   const exchangeRate = output / input;
-  if(output === 0 || isNaN(output)){
+  if (output === 0 || isNaN(output)) {
     $("#output").val("");
     $(".rate.value").css("display", "none");
     $(".btn.swap").html("Enter an amount");
     $(".btn.swap").addClass("disabled");
-  }else{
+  } else {
     $("#output").val(output.toFixed(7));
     $(".rate.value").css("display", "block");
     if (buyMode) {
@@ -120,42 +146,55 @@ async function updateOutput(input){
   }
 }
 
-async function checkBalance(input){
-  const balanceRaw = buyMode 
-    ? await web3.eth.getBalance(user) 
-    : await tokenInst.methods.balanceOf(user).call()
+async function checkBalance(input) {
+  const balanceRaw = buyMode
+    ? await web3.eth.getBalance(user)
+    : await tokenInst.methods.balanceOf(user).call();
   const balance = parseFloat(web3.utils.fromWei(balanceRaw, "ether"));
 
-  if(balance >= input){
+  if (balance >= input) {
     $(".btn.swap").removeClass("disabled");
     $(".btn.swap").html("Swap");
-  }else {
+  } else {
     $(".btn.swap").addClass("disabled");
     $(".btn.swap").html(`Insufficient ${buyMode ? "ETH" : token} balance`);
   }
 }
 
-function buyToken(){
+function buyToken() {
   const tokenAddr = tokenInst._address;
   return new Promise((resolve, reject) => {
     dexInst.methods
       .buyToken(tokenAddr, finalInput, finalOutput)
       .send({ value: finalInput })
       .then((receipt) => {
-        console.log(receipt);
+        const eventData = receipt.events.buy.returnValues;
+        const amountDisplay = parseFloat(
+          web3.utils.fromWei(eventData._amount, "ether")
+        );
+        const costDisplay = parseFloat(
+          web3.utils.fromWei(eventData._cost, "ether")
+        );
+        const tokenAddr = eventData._tokenAddr;
+        alert(`
+          Swap successful! \n
+          Token address: ${tokenAddr} \n
+          Amount: ${amountDisplay.toFixed(7)} ${token} \n
+          Cost: ${costDisplay.toFixed(7)} ETH
+        `);
         resolve();
       })
       .catch((err) => reject(err));
   });
 }
 
-async function sellToken(){
+async function sellToken() {
   const allowance = await tokenInst.methods.allowance(user, dexAddr).call();
-  if(parseInt(finalInput) > parseInt(allowance)){
+  if (parseInt(finalInput) > parseInt(allowance)) {
     try {
       await tokenInst.methods.approve(dexAddr, finalInput).send();
-    } catch (err){
-      throw(err);
+    } catch (err) {
+      throw err;
     }
   }
 
@@ -164,9 +203,19 @@ async function sellToken(){
     const sellTx = await dexInst.methods
       .sellToken(tokenAddr, finalInput, finalOutput)
       .send();
-    console.log(sellTx);
+    const eventData = sellTx.events.sell.returnValues;
+    const amountDisplay = parseFloat(
+      web3.utils.fromWei(eventData._amount, "ether")
+    );
+    const costDisplay = parseFloat(web3.utils.fromWei(eventData._cost, "ether"));
+    const _tokenAddr = eventData._tokenAddr;
+    alert(`
+        Swap successful!\n
+        Token Address: ${_tokenAddr} \n
+        Amount: ${amountDisplay.toFixed(7)} ETH\n
+        Price: ${costDisplay.toFixed(7)} ${token}
+      `);
   } catch (err) {
-    throw (err);
+    throw err;
   }
-
 }

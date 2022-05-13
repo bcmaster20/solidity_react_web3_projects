@@ -22,7 +22,12 @@
 //
 // const fs = require('fs');
 // const mnemonic = fs.readFileSync(".secret").toString().trim();
+require('dotenv').config();
 
+const HDWalletProvider = require('@truffle/hdwallet-provider');
+
+const private_key = process.env.PRIVATE_KEY;
+const clientURL = process.env.CLIENT_URL;
 module.exports = {
   /**
    * Networks define how you connect to your ethereum client and let you set the
@@ -46,6 +51,22 @@ module.exports = {
      port: 8545,            // Standard Ethereum port (default: none)
      network_id: "*",       // Any network (default: none)
     },
+    rinkeby: {
+        provider: () => new HDWalletProvider( {
+          privateKeys: [private_key],
+          providerOrUrl: clientURL,
+          numberOfAddresses: 1
+        }
+      ),
+      network_id: 4, // Rinkeby's id
+      gas: 8500000, // Gas sent with each transaction (default: ~6700000)
+      gasPrice: 60000000000, // 60 gwei (in wei)
+      confirmations: 2, // # of confs to wait between deployments. (default: 0)
+      timeoutBlocks: 200, // # of blocks before a deployment times out  (minimum/default: 50)
+      skipDryRun: true, // Skip dry run before migrations? (default: false for public nets )
+      networkCheckTimeout: 10000000
+  },
+
     // Another network with more advanced options...
     // advanced: {
     // port: 8777,             // Custom port

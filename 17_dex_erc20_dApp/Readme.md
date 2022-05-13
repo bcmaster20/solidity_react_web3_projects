@@ -57,6 +57,49 @@ npm i web3
 truffle console
 truffle(develop)> migrate --reset
 ```
+## 5. Deploy
+```
+npm install @truffle/hdwallet-provider
+npm install dotenv --save
+
+```
+
+### .env Setting
+```
+CLIENT_URL=https://eth-rinkeby.alchemyapi.io/v2/<Your_API_KEY>
+PRIVATE_KEY=<Your_PRIVATE_KEY>
+```
+
+### truffle config Setting
+```
+const private_key = process.env.PRIVATE_KEY;
+const clientURL = process.env.CLIENT_URL;
+...
+    rinkeby: {
+        provider: () => new HDWalletProvider( {
+          privateKeys: [private_key],
+          providerOrUrl: clientURL,
+          numberOfAddresses: 1
+        }
+      ),
+      network_id: 4, // Rinkeby's id
+      gas: 8500000, // Gas sent with each transaction (default: ~6700000)
+      gasPrice: 60000000000, // 60 gwei (in wei)
+      confirmations: 2, // # of confs to wait between deployments. (default: 0)
+      timeoutBlocks: 200, // # of blocks before a deployment times out  (minimum/default: 50)
+      skipDryRun: true, // Skip dry run before migrations? (default: false for public nets )
+      networkCheckTimeout: 10000000
+  },
+```
+
+### Migrate Rinkeby
+```
+npx truffle migrate --network rinkeby
+Rinkeby Dai:  0x8d921E11AD879B8f6642F164bDa3b21605D758d8
+Rinkeby Link:  0x7F2b2f7e1Ec50967c65866C9d3b1DE0d3Aa8DB52
+Rinkeby Comp:  0x07196900D4A13622f50aBa97A9DE2b50Ffc549ea
+Rinkeby Dex:  0x8aC7fFcb2bB0E63B4B5AeB67a2Aa42f5e0DcaF46
+```
 
 
 
