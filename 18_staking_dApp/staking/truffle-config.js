@@ -1,3 +1,5 @@
+require('babel-register');
+require('babel-polyfill');
 /**
  * Use this file to configure your truffle project. It's seeded with some
  * common settings for different networks and features like migrations,
@@ -77,7 +79,8 @@ module.exports = {
   mocha: {
     // timeout: 100000
   },
-
+  contracts_directory: './contracts/',
+  contracts_build_directory: './src/abis/',
   // Configure your compilers
   compilers: {
     solc: {

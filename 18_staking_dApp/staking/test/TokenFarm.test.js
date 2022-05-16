@@ -23,7 +23,8 @@ contract('TokenFarm', ([owner, investor]) => {
     await dappToken.transfer(tokenFarm.address, tokens('1000000'))
 
     // Send tokens to investor
-    await daiToken.transfer(investor, tokens('100'), { from: owner })
+    // await daiToken.transfer(investor, tokens('100'), { from: owner })
+    await daiToken.transfer(investor, tokens('100'))
   })
 
   describe('Mock DAI deployment', async () => {
