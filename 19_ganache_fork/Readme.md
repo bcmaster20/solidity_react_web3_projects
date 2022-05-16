@@ -16,7 +16,7 @@ npx truffle init
 - alchemyapi
 https://eth-mainnet.alchemyapi.io/v2/6QpQkZelqjsxzAroF75VD9SN7UukKlYE
 
-## Create Truffle Project
+## Fork and Test
 ```
 npx ganache-cli -f https://eth-mainnet.alchemyapi.io/v2/6QpQkZelqjsxzAroF75VD9SN7UukKlYE -u 0x47ac0Fb4F2D84898e4D9E7b4DaB3C24507a6D503
 
