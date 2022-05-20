@@ -160,10 +160,56 @@ $ npx hh init
 $ npm install --save-dev @openzeppelin/hardhat-upgrades
 ```
 
+## Deploy Rinkeby
+- deploy.js
+```
+async function main() {
+  const Box = await ethers.getContractFactory("Box")
+  console.log("Deploying Box, ProxyAdmin, and then Proxy...")
+  const proxy = await upgrades.deployProxy(Box, [42], { initializer: 'store' })
+  console.log("Proxy of Box deployed to:", proxy.address)
+}
+```
+- Deploy Command
+```
+$ npx hh run scripts/deploy.js --network rinkeby
+Deploying Box, ProxyAdmin, and then Proxy...
+Proxy of Box deployed to: 0x229bC540091cd5b5007661B6f9331Dd638023399
+```
+- Hardhat Test in Rinkeby
+```
+$ npx hh console --network rinkeby
+$ const Box = await ethers.getContractFactory("Box")
+$ const box = Box.attach("0x229bC540091cd5b5007661B6f9331Dd638023399")
+$ (await box.retrieve()).toString() // '42'
+```
+## Upgrade Rinkeby
+- Upgrade.js
+```
+    const BoxV2 = await ethers.getContractFactory("BoxV2")
+    let box = await upgrades.upgradeProxy("0x229bC540091cd5b5007661B6f9331Dd638023399", BoxV2)
+    console.log("Your upgraded proxy is done!", box.address)
+```
+- Upgrade Command
+```
+$ npx hh run scripts/upgrade.js --network rinkeby
+Your upgraded proxy is done! 0x229bC540091cd5b5007661B6f9331Dd638023399
+```
+
+- Test of upgrade contract in Rinkeby
+```
+$ npx hh console --network rinkeby
+$ const BoxV2 = await ethers.getContractFactory("BoxV2")
+$ const boxV2 = BoxV2.attach("0x229bC540091cd5b5007661B6f9331Dd638023399")
+$ (await boxV2.retrieve()).toString() // '42'
+$ (await boxV2.increment())
+$ (await boxV2.retrieve()).toString() // '43'
+```
+
 ## Reference
 - [YT](https://www.youtube.com/watch?v=bdXJmWajZRY)
 - [Openzeppellin Upgrade](https://docs.openzeppelin.com/upgrades-plugins/1.x/)
-
+- [Upgrade Step By Step](https://forum.openzeppelin.com/t/openzeppelin-upgrades-step-by-step-tutorial-for-hardhat/3580)
 # 3. Connect to Wallet
 
 # 4. Dao & Governance
