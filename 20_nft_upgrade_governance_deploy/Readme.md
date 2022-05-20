@@ -105,9 +105,6 @@ https://rinkeby.etherscan.io/address/0x629C50B3A3Ab461BEaf6543bB60Cd6cFd1D3B631#
 ```
 
 ## Reference
-
-
-### Source & Video
 - [YT](https://www.youtube.com/watch?v=9oERTH9Bkw0)
 - [Github](https://github.com/PatrickAlphaC/all-on-chain-generated-nft)
 - [Hardhat](https://hardhat.org/guides/)
@@ -116,6 +113,56 @@ https://rinkeby.etherscan.io/address/0x629C50B3A3Ab461BEaf6543bB60Cd6cFd1D3B631#
 - [SVG](https://www.w3schools.com/graphics/svg_intro.asp)
 
 # 2. Upgrading Smart Contract
+## Proxy Terminology
+```
+1. The Implementation Contract
+- Which has all our code of our protocal.
+When we upgrade, we launch a brand new implemenation contract
+
+2. The proxy contract.
+Which points to which implementation is the "correct" one, and routes everyone's function calls to that contract.
+
+3. The user
+- They make calls to the proxy.
+
+4. The admin
+- This is the user(or group of users/voters) who upgrade to new implementation contracts
+```
+
+## Theory
+- Biggest Gotchas:
+```
+1. Storage Clashes
+2. Function Selector Clashes
+```
+
+- Function Selector
+```
+A 4 byte hash of a function name and function signature that define a function
+```
+
+- Transparent Proxy Pattern
+```
+Admins can't call implementation contract function.
+Admin functions are functions that govern the upgrades.
+Admin functions are located in the proxy contract.
+Users still powerless on admin functions.
+```
+
+- Universal upgradeable Proxies
+```
+AdminOnly upgrade functions are in the implementation contracts instead of the proxy.
+```
+
+## Create Project and Install Module
+```
+$ npx hh init
+$ npm install --save-dev @openzeppelin/hardhat-upgrades
+```
+
+## Reference
+- [YT](https://www.youtube.com/watch?v=bdXJmWajZRY)
+- [Openzeppellin Upgrade](https://docs.openzeppelin.com/upgrades-plugins/1.x/)
 
 # 3. Connect to Wallet
 
