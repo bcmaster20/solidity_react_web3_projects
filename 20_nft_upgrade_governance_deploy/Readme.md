@@ -210,7 +210,57 @@ $ (await boxV2.retrieve()).toString() // '43'
 - [YT](https://www.youtube.com/watch?v=bdXJmWajZRY)
 - [Openzeppellin Upgrade](https://docs.openzeppelin.com/upgrades-plugins/1.x/)
 - [Upgrade Step By Step](https://forum.openzeppelin.com/t/openzeppelin-upgrades-step-by-step-tutorial-for-hardhat/3580)
+
 # 3. Connect to Wallet
+## Project List
+0. Hardhat Simple Storage
+1. HTML / JS
+2. NexTJS / React and "raw" ethers
+3. NexTJS & "web3-react"
+4. NexTJS & react-moralis
+5. NextJS & "web3Modal"
+6. NextJS & "useDapp"
+
+## 0. Hardhat Simple Storage
+```
+$ npm install
+$ npx hardhat deploy --network rinkeby
+----------------------------------------------------
+Deploying SimpleStorage and waiting for confirmations...
+deploying "SimpleStorage" (tx: 0x94ef8aba3a05cdfd3a309c949fc1428d11b668edad431c5f61d166f2e46fc738)...: deployed at 0xb0c26D3c2161bD912F22d6e37624A339De2D006F with 463682 gas
+SimpleStorage deployed at 0xb0c26D3c2161bD912F22d6e37624A339De2D006F
+Verifying contract...
+Nothing to compile
+Compiling 1 file with 0.8.8
+Successfully submitted source code for contract
+contracts/SimpleStorage.sol:SimpleStorage at 0xb0c26D3c2161bD912F22d6e37624A339De2D006F
+for verification on the block explorer. Waiting for verification result...
+
+Successfully verified contract SimpleStorage on Etherscan.
+https://rinkeby.etherscan.io/address/0xb0c26D3c2161bD912F22d6e37624A339De2D006F#code
+```
+### Reference
+- [YT](https://www.youtube.com/watch?v=pdsYCkUWrgQ)
+
+## 1. HTML / JS
+- http-server
+```
+npm install http-server
+npx http-server
+```
+
+- browserify
+```
+npm install browserify
+browserify index.js --standalone bundle -o ./dist/bundle.js
+```
+### Reference
+- [http-server](https://www.npmjs.com/package/http-server)
+
 
 # 4. Dao & Governance
+## Create Project
+```
+
+```
 
