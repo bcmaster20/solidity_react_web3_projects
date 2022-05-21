@@ -261,6 +261,17 @@ browserify index.js --standalone bundle -o ./dist/bundle.js
 # 4. Dao & Governance
 ## Create Project
 ```
-
+$ npm install hardhat
+$ npm install ethers @nomiclabs/hardhat-waffle ethereum-waffle chai @nomiclabs/hardhat-ethers web3modal @openzeppelin/contracts dotenv hardhat-shorthand
+$ npm install -D hardhat-deploy
+$ npm install --save-dev  @nomiclabs/hardhat-ethers@npm:hardhat-deploy-ethers
+$ npx hardhat init
+※ create only hardhat.config.js 
 ```
 
+## GovernanceToken.sol
+
+
+## Reference
+[Openzeppellin Wizard](https://docs.openzeppelin.com/contracts/4.x/wizard)
+[Openzeppellin Governance](https://docs.openzeppelin.com/contracts/4.x/api/governance)
