@@ -268,10 +268,25 @@ $ npm install --save-dev  @nomiclabs/hardhat-ethers@npm:hardhat-deploy-ethers
 $ npx hardhat init
 ※ create only hardhat.config.js 
 ```
+## Typescript Module
+- Example Command Typescript+Hardhat 
+``` 
+$ npm install typescript typechain ts-node @typechain/ethers-v5 @typechain/hardhat @types/chai @types/node 
+```
+- Install @typechain/hardhat
+```
+$ npm install @typechain/hardhat
+```
 
-## GovernanceToken.sol
+
+## Deployment Scripts: Governor Token
+
+
+
+## GovernanceToken.sol, Timelock
 
 
 ## Reference
 [Openzeppellin Wizard](https://docs.openzeppelin.com/contracts/4.x/wizard)
 [Openzeppellin Governance](https://docs.openzeppelin.com/contracts/4.x/api/governance)
+[hardhat-typescript-deploy](https://github.com/wighawag/hardhat-deploy)
