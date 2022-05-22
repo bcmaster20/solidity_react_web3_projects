@@ -13,6 +13,7 @@
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "npm:hardhat-deploy-ethers@^0.3.0-beta.13",
-    "hardhat-deploy": "^0.11.9"
+    "hardhat-deploy": "^0.11.9",
+    "ts-node": "^10.8.0"
   }
 }

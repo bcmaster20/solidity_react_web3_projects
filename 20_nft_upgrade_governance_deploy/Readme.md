@@ -273,17 +273,121 @@ $ npx hardhat init
 ``` 
 $ npm install typescript typechain ts-node @typechain/ethers-v5 @typechain/hardhat @types/chai @types/node 
 ```
-- Install @typechain/hardhat
+- Install @typechain/hardhat, ts-node
 ```
 $ npm install @typechain/hardhat
+$ npm install --save-dev ts-node
 ```
 
+## 1. Deployment Scripts: Governor Token
+- Deploy and Delegate, numCheckpoints
+```
+  const governanceToken = await deploy("GovernanceToken", {
+    from: deployer,
+    args: [],
+    log: true,
+    // we need to wait if on a live network so we can verify properly
+    waitConfirmations: networkConfig[network.name].blockConfirmations || 1,
+  })
+  await delegate(governanceToken.address, deployer)
 
-## Deployment Scripts: Governor Token
+const delegate = async (governanceTokenAddress: string, delegatedAccount: string) => {
+  const governanceToken = await ethers.getContractAt("GovernanceToken", governanceTokenAddress)
+  const transactionResponse = await governanceToken.delegate(delegatedAccount)
+  await transactionResponse.wait(1)
+  console.log(`Checkpoints: ${await governanceToken.numCheckpoints(delegatedAccount)}`)
+}
+```
 
+- Deploy Result
+```
+Deploying GovernanceToken and waiting for confirmations...
+deploying "GovernanceToken" (tx: 0xb8328573ab9b294f1c56d0ebd6291a47f293f60fc6ae8b8152ab7b4e509c802e)...: deployed at 0x5FbDB2315678afecb367f032d93F642f64180aa3 with 3326223 gas
+GovernanceToken at 0x5FbDB2315678afecb367f032d93F642f64180aa3
+Delegating to 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+Checkpoints: 1
+Delegated!
+```
 
+## 2. Deployment Scripts: TimeLock
+```
+  const timeLock = await deploy("TimeLock", {
+    from: deployer,
+    args: [MIN_DELAY, [], []],
+    log: true,
+    // we need to wait if on a live network so we can verify properly
+    waitConfirmations: networkConfig[network.name].blockConfirmations || 1,
+  })
+```
 
-## GovernanceToken.sol, Timelock
+## 3. Deployment Scripts: Governance
+```
+  const governanceToken = await get("GovernanceToken")
+  const timeLock = await get("TimeLock")
+
+  const governorContract = await deploy("GovernorContract", {
+    from: deployer,
+    args: [
+      governanceToken.address,
+      timeLock.address,
+      QUORUM_PERCENTAGE,
+      VOTING_PERIOD,
+      VOTING_DELAY,
+    ],
+    log: true,
+    // we need to wait if on a live network so we can verify properly
+    waitConfirmations: networkConfig[network.name].blockConfirmations || 1,
+  })
+```
+- Error Fix
+```
+Error: ERROR processing dao-governance\deploy\03-deploy-governor-contract.ts:
+Error: Transaction reverted: trying to deploy a contract whose code is too large
+※※※※　Add option allowUnlimitedContractSize= true 
+hardhat.config.ts
+  networks : {
+    hardhat: {
+      chainId: 31337,
+      allowUnlimitedContractSize: true,
+    },
+```
+## 4. Deployment Scripts: Setup Contracts
+```
+  const governanceToken = await ethers.getContract("GovernanceToken", deployer)
+  const timeLock = await ethers.getContract("TimeLock", deployer)
+  const governor = await ethers.getContract("GovernorContract", deployer)
+
+  log("----------------------------------------------------")
+  log("Setting up contracts for roles...")
+  // would be great to use multicall here...
+  const proposerRole = await timeLock.PROPOSER_ROLE()
+  const executorRole = await timeLock.EXECUTOR_ROLE()
+  const adminRole = await timeLock.TIMELOCK_ADMIN_ROLE()
+
+  const proposerTx = await timeLock.grantRole(proposerRole, governor.address)
+  await proposerTx.wait(1)
+  const executorTx = await timeLock.grantRole(executorRole, ADDRESS_ZERO)
+  await executorTx.wait(1)
+  const revokeTx = await timeLock.revokeRole(adminRole, deployer)
+  await revokeTx.wait(1)
+
+```
+
+## 5. Deployment Scripts: Box
+```
+const box = await deploy("Box", {
+    from: deployer,
+    args: [],
+    log: true,
+    // we need to wait if on a live network so we can verify properly
+    waitConfirmations: networkConfig[network.name].blockConfirmations || 1,
+  })
+  log(`Box at ${box.address}`)
+    const boxContract = await ethers.getContractAt("Box", box.address)
+  const timeLock = await ethers.getContract("TimeLock")
+  const transferTx = await boxContract.transferOwnership(timeLock.address)
+  await transferTx.wait(1)
+```
 
 
 ## Reference
