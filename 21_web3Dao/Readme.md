@@ -33,6 +33,12 @@ https://whitelist-brown.vercel.app
 https://cryptonft-mocha.vercel.app/
 ```
 
+## 1-5 icocryptodevstoken frontend
+- Deploy Vercel Site 
+```
+https://icocrypto-lake.vercel.app/
+```
+
 ## Reference
 [Git](https://github.com/LearnWeb3DAO/ICO)
 
