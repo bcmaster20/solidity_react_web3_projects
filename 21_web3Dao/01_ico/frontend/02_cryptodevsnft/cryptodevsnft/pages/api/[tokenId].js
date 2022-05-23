@@ -4,6 +4,7 @@ export default function handler(req, res) {
   // As all the images are uploaded on github, we can extract the images from github directly.
   const image_url =
     "https://raw.githubusercontent.com/jaylee923/solidity_react_web3_projects/main/21_web3Dao/01_ico/frontend/02_cryptodevsnft/cryptodevsnft/public/cryptodevs/";
+    
   // The api is sending back metadata for a Crypto Dev
   // To make our collection compatible with Opensea, we need to follow some Metadata standards
   // when sending back the response from the api
