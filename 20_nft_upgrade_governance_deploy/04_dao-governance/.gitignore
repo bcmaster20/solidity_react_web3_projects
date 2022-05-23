@@ -1,3 +1,9 @@
 artifacts/*
 cache/*
 typechain-types/*
+
+proposals.json
+.notes.md
+typechain-types
+gas-report.txt
+deployments

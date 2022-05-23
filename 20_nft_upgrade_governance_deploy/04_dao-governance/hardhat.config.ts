@@ -19,6 +19,7 @@ const config: HardhatUserConfig = {
     },
     localhost: {
       chainId: 31337,
+      allowUnlimitedContractSize: true,
     }
   },
   solidity: "0.8.9",

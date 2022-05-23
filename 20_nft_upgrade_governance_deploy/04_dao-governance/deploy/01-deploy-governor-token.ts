@@ -22,7 +22,7 @@ const deployGovernanceToken: DeployFunction = async function (hre: HardhatRuntim
   })
   log(`GovernanceToken at ${governanceToken.address}`)
   // return; 
-  // log(developmentChains);
+  log(developmentChains);
 
   if (!developmentChains.includes(network.name) && process.env.ETHERSCAN_API_KEY) {
     await verify(governanceToken.address, [])

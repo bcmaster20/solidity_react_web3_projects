@@ -279,7 +279,8 @@ $ npm install @typechain/hardhat
 $ npm install --save-dev ts-node
 ```
 
-## 1. Deployment Scripts: Governor Token
+## Deployment Scripts
+### Deployment Scripts: 1. Governor Token
 - Deploy and Delegate, numCheckpoints
 ```
   const governanceToken = await deploy("GovernanceToken", {
@@ -309,7 +310,7 @@ Checkpoints: 1
 Delegated!
 ```
 
-## 2. Deployment Scripts: TimeLock
+### Deployment Scripts: 2. TimeLock
 ```
   const timeLock = await deploy("TimeLock", {
     from: deployer,
@@ -320,7 +321,7 @@ Delegated!
   })
 ```
 
-## 3. Deployment Scripts: Governance
+### Deployment Scripts: 3. Governance
 ```
   const governanceToken = await get("GovernanceToken")
   const timeLock = await get("TimeLock")
@@ -351,7 +352,7 @@ hardhat.config.ts
       allowUnlimitedContractSize: true,
     },
 ```
-## 4. Deployment Scripts: Setup Contracts
+### Deployment Scripts: 4. Setup Contracts
 ```
   const governanceToken = await ethers.getContract("GovernanceToken", deployer)
   const timeLock = await ethers.getContract("TimeLock", deployer)
@@ -373,7 +374,7 @@ hardhat.config.ts
 
 ```
 
-## 5. Deployment Scripts: Box
+### Deployment Scripts: 5. Box
 ```
 const box = await deploy("Box", {
     from: deployer,
@@ -389,8 +390,60 @@ const box = await deploy("Box", {
   await transferTx.wait(1)
 ```
 
+## Script Test
+### 1. propose.ts (Create Propose)
+```
+$ npx hh deploy --network localhost
+$ npx hh run scripts/propose.ts --network localhost
+--------
+Proposing store on 0xa513E6E4b8f2a923D98304ec87F64353C4D5C853 with 77
+Proposal Description:
+  Proposal #1 77 in the Box!
+Moving blocks...
+Moved 2 blocks
+Proposed with proposal ID:
+  51508501457481436077634888669578781761098444908194579718864424217340756472817
+Current Proposal State: 1
+Current Proposal Snapshot: 11
+Current Proposal Deadline: 16
+```
+### 2. vote.ts (Votting Propose)
+[castVoteBySig](https://forum.openzeppelin.com/t/what-is-votecastbysig/17069)
+- vote process
+```
+$ npx hh run scripts/vote.ts --network localhost
+--------
+Voting...
+I lika do da cha cha
+Current Proposal State: 1
+Moving blocks...
+Moved 6 blocks
+
+```
+- Get votes state via console
+```
+$ npx hh console --network localhost
+> const governor = await ethers.getContract("GovernorContract")
+> await governor.state("51508501457481436077634888669578781761098444908194579718864424217340756472817")
+4 // succeeded
+```
+
+### 3. queue-and-execute.ts 
+```
+$ npx hh run scripts/queue-and-execute.ts --network localhost
+------
+Queueing...
+Moving blocks...
+Moved forward in time 3601 seconds
+Moving blocks...
+Moved 1 blocks
+Executing...
+Box value: 77
+```
+### 
 
 ## Reference
+[What's a DAO, How to build Dao](https://www.youtube.com/watch?v=X_QKZzd68ro)
 [Openzeppellin Wizard](https://docs.openzeppelin.com/contracts/4.x/wizard)
 [Openzeppellin Governance](https://docs.openzeppelin.com/contracts/4.x/api/governance)
 [hardhat-typescript-deploy](https://github.com/wighawag/hardhat-deploy)
