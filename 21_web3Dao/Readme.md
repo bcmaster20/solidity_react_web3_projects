@@ -16,6 +16,13 @@ CryptoDevs Contract Address: 0xeb69360ee1654eE3FdC2e58ceB269ac4553D09BD
 Crypto Devs Token Contract Address: 0x6B5cbF64703ee43A2dED6328a214B139273D5eE7
 ```
 
+## 1-3 whitelist frontend
+- Init Project and Install module
+```
+$ npx create-next-app@latest
+npm install web3modal
+```
+
 ## Reference
 [Git](https://github.com/LearnWeb3DAO/ICO)
 
