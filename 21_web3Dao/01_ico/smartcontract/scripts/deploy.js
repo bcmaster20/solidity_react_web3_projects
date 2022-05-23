@@ -1,7 +1,7 @@
 const { ethers } = require("hardhat");
 const hre = require("hardhat");
 require("dotenv").config({ path: ".env" });
-const { CRYPTO_DEVS_NFT_CONTRACT_ADDRESS } = require("../constants");
+const { CRYPTO_DEVS_NFT_CONTRACT_ADDRESS, WHITELIST_CONTRACT_ADDRESS, METADATA_URL } = require("../constants");
 
 async function main() {
 
@@ -13,7 +13,7 @@ async function main() {
 
   // CryptoDevs Deploy
   const CryptoDevs = await ethers.getContractFactory("CryptoDevs");
-  const cryptoDevs = await CryptoDevs.deploy("", whitelist.address);
+  const cryptoDevs = await CryptoDevs.deploy(METADATA_URL, WHITELIST_CONTRACT_ADDRESS);
   await cryptoDevs.deployed();  
   console.log("CryptoDevs Contract Address:", cryptoDevs.address);
 
