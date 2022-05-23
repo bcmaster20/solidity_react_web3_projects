@@ -12,8 +12,8 @@ $ npm install @nomiclabs/hardhat-etherscan
 $ npx hh run scripts/deploy.js --network rinkeby
 ---
 Whitelist Contract Address: 0x44A9b7d0C955e759013e66cCCF3906aa5bffCE0C
-CryptoDevs Contract Address: 0xC7c2EfE134b09dCA37B608Efb8BFa827Eee4C0fc
-Crypto Devs Token Contract Address: 0x969D4bB3B34890Ad8A9ac5480438cBf720286f90
+CryptoDevs Contract Address: 0xE2A956a0BAef24487fe3f02cC88C015cBaA0f2c8
+Crypto Devs Token Contract Address: 0xF4c5b895DB36941957ab2658C3be2d361044B5C8
 ```
 
 ## 1-3 whitelist frontend
@@ -23,11 +23,15 @@ $ npx create-next-app@latest
 $ npm install web3modal ethers
 ```
 - Deploy Vercel Site 
+```
 https://whitelist-e5pfgo96a-jaylee923.vercel.app/
+```
 
 ## 1-4 cryptodevsnft frontend
-
-
+- Deploy Vercel Site 
+```
+https://cryptonft-bucqmcypq-jaylee923.vercel.app/
+```
 
 ## Reference
 [Git](https://github.com/LearnWeb3DAO/ICO)
