@@ -12,8 +12,8 @@ $ npm install @nomiclabs/hardhat-etherscan
 $ npx hh run scripts/deploy.js --network rinkeby
 ---
 Whitelist Contract Address: 0x44A9b7d0C955e759013e66cCCF3906aa5bffCE0C
-CryptoDevs Contract Address: 0xE2A956a0BAef24487fe3f02cC88C015cBaA0f2c8
-Crypto Devs Token Contract Address: 0xF4c5b895DB36941957ab2658C3be2d361044B5C8
+CryptoDevs Contract Address: 0xc81665Ae4C76bE245627dbf32c3670Cb82803573
+Crypto Devs Token Contract Address: 0x28dF5796D98438D5f7D220a328D9a0347aD7571f
 ```
 
 ## 1-3 whitelist frontend
@@ -30,7 +30,7 @@ https://whitelist-e5pfgo96a-jaylee923.vercel.app/
 ## 1-4 cryptodevsnft frontend
 - Deploy Vercel Site 
 ```
-https://cryptonft-bucqmcypq-jaylee923.vercel.app/
+https://cryptonft-mocha.vercel.app/
 ```
 
 ## Reference
