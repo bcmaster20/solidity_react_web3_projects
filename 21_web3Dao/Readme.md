@@ -20,7 +20,7 @@ Crypto Devs Token Contract Address: 0x6B5cbF64703ee43A2dED6328a214B139273D5eE7
 - Init Project and Install module
 ```
 $ npx create-next-app@latest
-npm install web3modal
+$ npm install web3modal ethers
 ```
 
 ## Reference
