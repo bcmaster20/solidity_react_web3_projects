@@ -26,6 +26,20 @@ $ node scripts/4-set-claim-condition.js
 SDK initialized by address: 0x927c22BC93Bb171dDB28d7096502e4e202A2ACB6
 ✅ Successfully set claim condition!
 
+$ node scripts/5-deploy-token.js
+SDK initialized by address: 0x927c22BC93Bb171dDB28d7096502e4e202A2ACB6
+✅ Successfully deployed token module, address: 0xa5783d49Af78213a22E84E3D60Ca97BbC00ABbF1
+
+$ node scripts/6-print-money.js
+SDK initialized by address: 0x927c22BC93Bb171dDB28d7096502e4e202A2ACB6
+✅ There now is 1000000.0 $HOKAGE in circulation
+
+$ node scripts/7-airdrop-token.js
+SDK initialized by address: 0x927c22BC93Bb171dDB28d7096502e4e202A2ACB6
+✅ Going to airdrop 1038 tokens to 0x927c22BC93Bb171dDB28d7096502e4e202A2ACB6
+🌈 Starting airdrop...
+✅ Successfully airdropped tokens to all the holders of the NFT!
+
 ```
 
 ## Reference
