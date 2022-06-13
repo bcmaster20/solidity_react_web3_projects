@@ -114,12 +114,19 @@ npm install moralis react-moralis
 npm i magic-sdk
 ```
 
-## Reference
- [SmartContract](https://www.youtube.com/watch?v=-48_hdo9_gg)
- [Full-Blockchain-Course] (https://github.com/smartcontractkit/full-blockchain-solidity-course-js)
- [solidity example staking] (https://solidity-by-example.org/defi/staking-rewards/)
- [FrontEnd](https://www.youtube.com/watch?v=5vhVInexaUI)
- [Tailwindcss For Nextjs](https://tailwindcss.com/docs/guides/nextjs)
+### Reference
+ - [SmartContract](https://www.youtube.com/watch?v=-48_hdo9_gg)
+ - [Full-Blockchain-Course] (https://github.com/smartcontractkit/full-blockchain-solidity-course-js)
+ - [solidity example staking] (https://solidity-by-example.org/defi/staking-rewards/)
+ - [FrontEnd](https://www.youtube.com/watch?v=5vhVInexaUI)
+ - [Tailwindcss For Nextjs](https://tailwindcss.com/docs/guides/nextjs)
 
 
 ## 2. NFT Token Staking Project Create
+### Hardhat Project Init
+```
+
+$ npm install ethers hardhat @nomiclabs/hardhat-ethers @nomiclabs/hardhat-waffle ethereum-waffle chai 
+```
+### Reference
+ [SmartContract](https://www.youtube.com/watch?v=-48_hdo9_gg)
