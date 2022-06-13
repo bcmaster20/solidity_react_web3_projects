@@ -40,6 +40,42 @@ SDK initialized by address: 0x927c22BC93Bb171dDB28d7096502e4e202A2ACB6
 🌈 Starting airdrop...
 ✅ Successfully airdropped tokens to all the holders of the NFT!
 
+$ node scripts/8-deploy-vote.js
+SDK initialized by address: 0x927c22BC93Bb171dDB28d7096502e4e202A2ACB6
+✅ Successfully deployed vote contract, address: 0x1b65873d075A0353C2dD94260AA05d4eC6c59501
+
+$ node scripts/9-setup-vote.js
+SDK initialized by address: 0x927c22BC93Bb171dDB28d7096502e4e202A2ACB6
+Successfully gave vote contract permissions to act on token contract
+✅ Successfully transferred 900000 tokens to vote contract
+
+$ node scripts/10-create-vote-proposals.js
+SDK initialized by address: 0x927c22BC93Bb171dDB28d7096502e4e202A2ACB6
+✅ Successfully created proposal to mint tokens
+✅ Successfully created proposal to reward ourselves from the treasury, let's hope people vote for it!
+
+$ node scripts/11-revoke-roles.js
+SDK initialized by address: 0x927c22BC93Bb171dDB28d7096502e4e202A2ACB6
+👀 Roles that exist right now: {
+  admin: [ '0x927c22BC93Bb171dDB28d7096502e4e202A2ACB6' ],
+  minter: [
+    '0x927c22BC93Bb171dDB28d7096502e4e202A2ACB6',
+    '0x1b65873d075A0353C2dD94260AA05d4eC6c59501'
+  ],
+  transfer: [
+    '0x927c22BC93Bb171dDB28d7096502e4e202A2ACB6',
+    '0x0000000000000000000000000000000000000000'
+  ]
+}
+🎉 Roles after revoking ourselves {
+  admin: [],
+  minter: [],
+  transfer: [
+    '0x927c22BC93Bb171dDB28d7096502e4e202A2ACB6',
+    '0x0000000000000000000000000000000000000000'
+  ]
+}
+✅ Successfully revoked our superpowers from the ERC-20 contract
 ```
 
 ## Reference
