@@ -96,7 +96,8 @@ module.exports = {
     // Your API key for Etherscan
     // Obtain one at https://etherscan.io/
     // apiKey: ETHERSCAN_API_KEY, // ethereum
-    apiKey: BSCSCAN_API_KEY, // binancetest
+    // apiKey: BSCSCAN_API_KEY, // binancetest 
+    apiKey: POLYGONSCAN_API_KEY, // polygon mumbai
     
   },  
   namedAccounts: {

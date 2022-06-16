@@ -2,11 +2,10 @@
 
 pragma solidity 0.8.4;
 
-import "BMRewards.sol";
-import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
+import "./CollectionV1.sol";
+import "./BMRewardsV1.sol";
 
-contract NFTStaking is Ownable, IERC721Receiver {
+contract NFTStakingV1 is Ownable, IERC721Receiver {
 
   uint256 public totalStaked;
   
@@ -23,12 +22,12 @@ contract NFTStaking is Ownable, IERC721Receiver {
 
   // reference to the Block NFT contract
   ERC721Enumerable nft;
-  BMRewards token;
+  BMRewardsV1 token;
 
   // maps tokenId to stake
   mapping(uint256 => Stake) public vault; 
 
-   constructor(ERC721Enumerable _nft, BMRewards _token) { 
+   constructor(ERC721Enumerable _nft, BMRewardsV1 _token) { 
     nft = _nft;
     token = _token;
   }
@@ -78,7 +77,6 @@ contract NFTStaking is Ownable, IERC721Receiver {
       _claim(msg.sender, tokenIds, true);
   }
 
-// @Net2Dev - Follow me on Youtube , Tiktok, Instagram
 // TOKEN REWARDS CALCULATION
 // MAKE SURE YOU CHANGE THE VALUE ON BOTH CLAIM AND EARNINGINFO FUNCTIONS.
 // Find the following line and update accordingly based on how much you want 

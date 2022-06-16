@@ -129,4 +129,52 @@ npm i magic-sdk
 $ npm install ethers hardhat @nomiclabs/hardhat-ethers @nomiclabs/hardhat-waffle ethereum-waffle chai 
 ```
 ### Reference
+
  [SmartContract](https://www.youtube.com/watch?v=-48_hdo9_gg)
+
+Step1
+1. NFT ERC721 Staking Smart Contract With ERC20 Token Rewards - Part1 Introduction
+ https://github.com/net2devcrypto/nftstaking/blob/main/N2D-NFT-ERC721-Staking-with-ERC20-TokenRewards.pdf
+
+2. NFT ERC721 Staking Smart Contract With ERC20 Token Rewards - Part2 NFT Staking Smart Contract
+https://github.com/net2devcrypto/nftstaking/blob/main/NFTStaking.sol contract NFTStaking
+```
+import "https://github.com/net2devcrypto/n2dstaking/N2DRewards.sol";
+import "https://github.com/net2devcrypto/n2dstaking/Collection.sol";
+```
+
+3. NFT ERC721 Staking Smart Contract With ERC20 Token Rewards - Part3 Build an ERC20 Token Contract
+ERC20 Staking Token Rewards Smart Contract : contract N2DRewards
+https://github.com/net2devcrypto/nftstaking/blob/main/N2DRewards.sol 
+
+NFT ERC721 Collection Smart Contract Solidity Code: contract Collection (batch)
+https://github.com/net2devcrypto/nftstaking/blob/main/Collection.sol
+
+4. NFT ERC721 Staking Smart Contract With ERC20 Token Rewards - Part4 - Lets Deploy and Test !!! (All)
+- Deploy the NFT Collection Smart Contract.
+- Deploy the ERC20 Staking Rewards Token Smart Token Contract.
+- Deploy the NFT Staking Smart Contract.
+- Stake and Claim the ERC20 Staking Reward Tokens !!
+https://github.com/net2devcrypto/nftstaking
+
+Step 2: 
+5. NFT Multi Vault Staking Contract With ERC20 Token Rewards - Part1 Multi Vault Functionality Overview
+https://github.com/net2devcrypto/nftstaking/blob/main/N2D-NFT-MultiVault-SmartContract-Logical-Design-Overview.pdf
+
+
+6. How to Allow An NFT ERC721 Staking Smart Contract Transfer NFTs from Holders Wallet - BONUS VIDEO!! (6)
+No Git Link
+
+
+6. Simple ERC-20 Token Reward Calculation for NFT Staking - UPDATED CONTRACT FILE INCLUDED !!!! (7)
+https://github.com/net2devcrypto/nftstaking/blob/main/nftstakingV2.sol
+
+7. Set An ERC-20 Token Max Supply and Pre-Mint Supply Amount in a Smart Contract !!! (8)
+https://github.com/net2devcrypto/nftstaking/blob/main/N2DRewards-MaxSupply-ERC20-Contract.sol
+
+8. Enable Staking Rewards On An EXISTING ERC-721 NFT Smart Contract!!!! - OpenZeppelin Contracts (9)
+https://github.com/net2devcrypto/nftstaking/blob/main/NFTStakingV3-BringYourOwnNFTCollection.sol
+
+9. Deploy ERC-721 NFT Smart Contract That ACCEPTS MANY ERC-20 CRYPTO TOKENS AS PAYMENT TO MINT !!! (10) - Collection 
+https://github.com/net2devcrypto/ERC721-Contracts/blob/main/ERC721-NFT-Collection-withAddCurrency-ERC20.sol
+
