@@ -236,8 +236,3 @@ $ npx hh deploy --tags stakingv2
 9. Reward Token=11574074074074
 
 ```
-
-### Reference
- [SmartContract](https://www.youtube.com/watch?v=-48_hdo9_gg)
- [Hardhat Test](https://dev.to/carlomigueldy/unit-testing-a-solidity-smart-contract-using-chai-mocha-with-typescript-3gcj)
- 
