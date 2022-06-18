@@ -39,7 +39,7 @@ const PRIVATE_KEY = process.env.PRIVATE_KEY || "";
  * @type import('hardhat/config').HardhatUserConfig
  */
 module.exports = {
-  defaultNetwork: "rinkeby",
+  defaultNetwork: "hardhat",
   networks: {
     hardhat: {
       // // If you want to do some forking, uncomment this
@@ -95,14 +95,20 @@ module.exports = {
   etherscan: {
     // Your API key for Etherscan
     // Obtain one at https://etherscan.io/
-    // apiKey: ETHERSCAN_API_KEY, // ethereum
+    apiKey: ETHERSCAN_API_KEY, // ethereum
     // apiKey: BSCSCAN_API_KEY, // binancetest 
-    apiKey: POLYGONSCAN_API_KEY, // polygon mumbai
+    // apiKey: POLYGONSCAN_API_KEY, // polygon mumbai
     
   },  
   namedAccounts: {
     deployer: {
       default: 0,
-    }
+    },
+    alice: {
+      default: 1,
+    },
+    bob: {
+      default: 2,
+    },
   }
 };

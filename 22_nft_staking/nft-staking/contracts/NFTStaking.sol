@@ -3,11 +3,12 @@
 pragma solidity 0.8.4;
 
 // import "./CollectionV1.sol";
-import "./BMRewardsV1.sol";
+import "./BMRewards.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
+// import "hardhat/console.sol";
 
-contract NFTStakingV1 is Ownable, IERC721Receiver {
+contract NFTStaking is Ownable, IERC721Receiver {
 
   uint256 public totalStaked;
   
@@ -24,12 +25,12 @@ contract NFTStakingV1 is Ownable, IERC721Receiver {
 
   // reference to the Block NFT contract
   ERC721Enumerable nft;
-  BMRewardsV1 token;
+  BMRewards token;
 
   // maps tokenId to stake
   mapping(uint256 => Stake) public vault; 
 
-   constructor(ERC721Enumerable _nft, BMRewardsV1 _token) { 
+   constructor(ERC721Enumerable _nft, BMRewards _token) { 
     nft = _nft;
     token = _token;
   }
@@ -113,6 +114,7 @@ contract NFTStakingV1 is Ownable, IERC721Receiver {
     if (_unstake) {
       _unstakeMany(account, tokenIds);
     }
+    // console.log(account, earned);
     emit Claimed(account, earned);
   }
 

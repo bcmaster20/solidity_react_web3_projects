@@ -125,56 +125,119 @@ npm i magic-sdk
 ## 2. NFT Token Staking Project Create
 ### Hardhat Project Init
 ```
-
 $ npm install ethers hardhat @nomiclabs/hardhat-ethers @nomiclabs/hardhat-waffle ethereum-waffle chai 
 ```
+
+### NFTStaking Reward Token
+- Test Code
+```
+    // Initialize
+    log(`\n\n--- Initialize and testing ---\n`);
+    // 1. Mint 3 NFT Token By Deployer
+    log("1. 3 NFT Token Mint by CollectionV1");
+    const tx = await collectionV1.mint(deployer, 3);
+    const totalsupply = await collectionV1.totalSupply();
+    
+    log("2. Add Controller the staking address at Rewards");
+    await bmRewardsV1.addController(nftStakingV1.address);
+    
+    log("3. Run the setApprovalForAll(nftstaking address, true) by deployer");
+    await collectionV1.setApprovalForAll(nftStakingV1.address, true);
+
+    const initBalance = await bmRewardsV1.balanceOf(deployer);
+
+    log("4. Run start stake 1");
+    await nftStakingV1.stake([1]);
+    // const vault = await nftStakingV1.vault(1);
+    // console.log(vault)
+    // let owner = await nftStakingV1.tokensOfOwner(deployer);
+    // console.log(owner)
+
+    log("5. Run start stake 2, 3");
+    await nftStakingV1.stake([2,3]);
+
+    log("6. Delay 3s");    
+    await delay(3000);
+
+    // console.log(await nftStakingV1.earningInfo(deployer, [1,2,3]));
+
+    log("7. Claim token 1, 2, 3");        
+    await nftStakingV1.claim([1, 2, 3]);
+
+    log("8. Reward token by NFT Token 1, 2, 3");
+    const rewardsBalance = await bmRewardsV1.balanceOf(deployer);
+
+    log(`9. Reward Token=${rewardsBalance.sub(initBalance).toString()}`);
+
+```
+- Run Result
+```
+$ npx hh deploy stakingv1
+1. 3 NFT Token Mint by CollectionV1
+2. Add Controller the staking address at Rewards
+3. Run the setApprovalForAll(nftstaking address, true) by deployer
+4. Run start stake 1
+5. Run start stake 2, 3
+6. Delay 3s
+7. Claim token 1, 2, 3
+8. Reward token by NFT Token 1, 2, 3
+9. Reward Token=34722222222222
+```
+
+### NFTStaking Multi Token
+- Test Code
+```
+log(`\n----- Initialize and test ----\n`)
+
+log(`1. collection: add currency pid=0, BMRewards, cost: 30 at Collection NFT`)
+await collection.addCurrency(BMRewards.address, ethers.utils.parseEther("30"));
+console.log((await collection.AllowedCrypto(0)).costvalue.toString());
+
+log(`2. bmRewards : approve bmrewards for nft mint at collection`)    
+await bmRewards.approve(Collection.address, ethers.utils.parseEther("30"))
+
+log(`3. collection: mint 1 pid=0`)        
+await collection.mint(deployer, 1, 0);
+
+log(`4. bmRewards: add controller`)
+await bmRewards.addController(NFTStaking.address);
+
+log(`5. collection: setApprovalForAll nft staking`)
+await collection.setApprovalForAll(NFTStaking.address, true);
+
+const initBalance = await bmRewards.balanceOf(deployer);
+
+log(`6. nftstaking start nft token 1`)
+await nftStaking.stake([1]);
+
+log(`7. Delay 3s`)
+delay(3000);
+
+log(`8. claim nft token 1`)
+tx = await nftStaking.claim([1]);
+
+const rewardsBalance = await bmRewards.balanceOf(deployer);
+log(`9. Reward Token=${rewardsBalance.sub(initBalance).toString()}`)
+
+```
+
+- Run Result
+```
+$ npx hh deploy --tags stakingv2
+1. collection: add currency pid=0, BMRewards, cost: 30 at Collection NFT
+30000000000000000000
+2. bmRewards : approve bmrewards for nft mint at collection
+3. collection: mint 1 pid=0
+4. bmRewards: add controller
+5. collection: setApprovalForAll nft staking
+6. nftstaking start nft token 1
+7. Delay 3s
+8. claim nft token 1
+9. Reward Token=11574074074074
+
+```
+
 ### Reference
-
  [SmartContract](https://www.youtube.com/watch?v=-48_hdo9_gg)
-
-Step1
-1. NFT ERC721 Staking Smart Contract With ERC20 Token Rewards - Part1 Introduction
- https://github.com/net2devcrypto/nftstaking/blob/main/N2D-NFT-ERC721-Staking-with-ERC20-TokenRewards.pdf
-
-2. NFT ERC721 Staking Smart Contract With ERC20 Token Rewards - Part2 NFT Staking Smart Contract
-https://github.com/net2devcrypto/nftstaking/blob/main/NFTStaking.sol contract NFTStaking
-```
-import "https://github.com/net2devcrypto/n2dstaking/N2DRewards.sol";
-import "https://github.com/net2devcrypto/n2dstaking/Collection.sol";
-```
-
-3. NFT ERC721 Staking Smart Contract With ERC20 Token Rewards - Part3 Build an ERC20 Token Contract
-ERC20 Staking Token Rewards Smart Contract : contract N2DRewards
-https://github.com/net2devcrypto/nftstaking/blob/main/N2DRewards.sol 
-
-NFT ERC721 Collection Smart Contract Solidity Code: contract Collection (batch)
-https://github.com/net2devcrypto/nftstaking/blob/main/Collection.sol
-
-4. NFT ERC721 Staking Smart Contract With ERC20 Token Rewards - Part4 - Lets Deploy and Test !!! (All)
-- Deploy the NFT Collection Smart Contract.
-- Deploy the ERC20 Staking Rewards Token Smart Token Contract.
-- Deploy the NFT Staking Smart Contract.
-- Stake and Claim the ERC20 Staking Reward Tokens !!
-https://github.com/net2devcrypto/nftstaking
-
-Step 2: 
-5. NFT Multi Vault Staking Contract With ERC20 Token Rewards - Part1 Multi Vault Functionality Overview
-https://github.com/net2devcrypto/nftstaking/blob/main/N2D-NFT-MultiVault-SmartContract-Logical-Design-Overview.pdf
-
-
-6. How to Allow An NFT ERC721 Staking Smart Contract Transfer NFTs from Holders Wallet - BONUS VIDEO!! (6)
-No Git Link
-
-
-6. Simple ERC-20 Token Reward Calculation for NFT Staking - UPDATED CONTRACT FILE INCLUDED !!!! (7)
-https://github.com/net2devcrypto/nftstaking/blob/main/nftstakingV2.sol
-
-7. Set An ERC-20 Token Max Supply and Pre-Mint Supply Amount in a Smart Contract !!! (8)
-https://github.com/net2devcrypto/nftstaking/blob/main/N2DRewards-MaxSupply-ERC20-Contract.sol
-
-8. Enable Staking Rewards On An EXISTING ERC-721 NFT Smart Contract!!!! - OpenZeppelin Contracts (9)
-https://github.com/net2devcrypto/nftstaking/blob/main/NFTStakingV3-BringYourOwnNFTCollection.sol
-
-9. Deploy ERC-721 NFT Smart Contract That ACCEPTS MANY ERC-20 CRYPTO TOKENS AS PAYMENT TO MINT !!! (10) - Collection 
-https://github.com/net2devcrypto/ERC721-Contracts/blob/main/ERC721-NFT-Collection-withAddCurrency-ERC20.sol
-
+ [Hardhat Test](https://dev.to/carlomigueldy/unit-testing-a-solidity-smart-contract-using-chai-mocha-with-typescript-3gcj)
+ 
