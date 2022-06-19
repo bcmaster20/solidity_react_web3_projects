@@ -624,44 +624,351 @@ const ABI = [
     "type": "function"
   }
 ];
-const ADDRESS = "0x7961C42B3d4def7d94DC3fFA94D9588761a789df";
+
+const VAULTABI = [
+  {
+    "inputs": [
+      {
+        "internalType": "contract ERC721Enumerable",
+        "name": "_nft",
+        "type": "address"
+      },
+      {
+        "internalType": "contract BMRewardsV1",
+        "name": "_token",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "Claimed",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "value",
+        "type": "uint256"
+      }
+    ],
+    "name": "NFTStaked",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "value",
+        "type": "uint256"
+      }
+    ],
+    "name": "NFTUnstaked",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "previousOwner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "OwnershipTransferred",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "balanceOf",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "tokenIds",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "claim",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "tokenIds",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "claimForAddress",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "tokenIds",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "earningInfo",
+    "outputs": [
+      {
+        "internalType": "uint256[1]",
+        "name": "info",
+        "type": "uint256[1]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "from",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bytes",
+        "name": "",
+        "type": "bytes"
+      }
+    ],
+    "name": "onERC721Received",
+    "outputs": [
+      {
+        "internalType": "bytes4",
+        "name": "",
+        "type": "bytes4"
+      }
+    ],
+    "stateMutability": "pure",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "owner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "renounceOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "tokenIds",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "stake",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "tokensOfOwner",
+    "outputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "ownerTokens",
+        "type": "uint256[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "totalStaked",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "transferOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "tokenIds",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "unstake",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "vault",
+    "outputs": [
+      {
+        "internalType": "uint24",
+        "name": "tokenId",
+        "type": "uint24"
+      },
+      {
+        "internalType": "uint48",
+        "name": "timestamp",
+        "type": "uint48"
+      },
+      {
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+];
+
+const NFTCONTRACT = "0xB0395e01b0463Ff91D5d399ead8e0e93D7Eb8FD5";
+const STAKINGCONTRACT = "0x522A22948E8A1D4c1c018188D36537A17d7C6D94";
 var account = null;
 var contract = null;
+var vaultcontract = null;
 const apikey="76JSG3E5TVMY1U5QFKQZMTMMPVXKMCCGHT";
 const endpoint = "https://api-rinkeby.etherscan.io/api";
-const nftpng = "https://ipfs.io/ipfs/QmUh1dSftvXLqvrFSsjJkbwt9oKpmRe6GTMmdzvidahmGf/";
-// const data = [
-//   {
-//     id: "0",
-//     img: "https://ipfs.io/ipfs/QmUh1dSftvXLqvrFSsjJkbwt9oKpmRe6GTMmdzvidahmGf/0.png",
-//     title: "Jay2Dev NFT Collection NFT #0",
-//     buttontext: "Buy Now"
-//   },
-//   {
-//     id: "1",
-//     img: "https://ipfs.io/ipfs/QmUh1dSftvXLqvrFSsjJkbwt9oKpmRe6GTMmdzvidahmGf/1.png",
-//     title: "Jay2Dev NFT Collection NFT #1",
-//     buttontext: "Buy Now"
-//   },
-//   {
-//     id: "2",
-//     img: "https://ipfs.io/ipfs/QmUh1dSftvXLqvrFSsjJkbwt9oKpmRe6GTMmdzvidahmGf/2.png",
-//     title: "Jay2Dev NFT Collection NFT #2",
-//     buttontext: "Buy Now"
-//   },
-//   {
-//     id: "3",
-//     img: "https://ipfs.io/ipfs/QmUh1dSftvXLqvrFSsjJkbwt9oKpmRe6GTMmdzvidahmGf/3.png",
-//     title: "Jay2Dev NFT Collection NFT #3",
-//     buttontext: "Buy Now"
-//   },
-//   {
-//     id: "4",
-//     img: "https://ipfs.io/ipfs/QmUh1dSftvXLqvrFSsjJkbwt9oKpmRe6GTMmdzvidahmGf/4.png",
-//     title: "Jay2Dev NFT Collection NFT #4",
-//     buttontext: "Buy Now"
-//   },
-// ]
+const nftpng = "https://ipfs.io/ipfs/QmQs9MyM262FjHVnuWtKX3CkWPzHzqJwyGwSiqCPTBJ5fR/";
+
 async function connectwallet() {
   if (window.ethereum) {
     var web3 = new Web3(window.ethereum);
@@ -669,7 +976,8 @@ async function connectwallet() {
     var accounts = await web3.eth.getAccounts();
     account = accounts[0];
     document.getElementById("wallet-address").textContent = account;
-    contract = new web3.eth.Contract(ABI, ADDRESS);
+    contract = new web3.eth.Contract(ABI, NFTCONTRACT);
+    vaultcontract = new web3.eth.Contract(VAULTABI, STAKINGCONTRACT);
   }
 }
 async function mint() {
@@ -681,6 +989,26 @@ async function mint() {
       .mint(account, _mintAmount)
       .send({ from: account, value: String(totalAmount) });
   }
+}
+
+async function stakeit() {
+	var tokenids = Number(document.querySelector("[name=stkid]").value);
+	vaultcontract.methods.stake([tokenids]).send({from: account});
+}
+
+async function unstakeit() {
+	var tokenids = Number(document.querySelector("[name=stkid]").value);
+	vaultcontract.methods.unstake([tokenids]).send({from: account});
+}
+
+async function claimit() {
+	var tokenids = Number(document.querySelector("[name=claimid]").value);
+	vaultcontract.methods.claim([tokenids]).send({from: account});
+}
+
+async function verify() {
+	var getbalance = Number(await vaultcontract.methods.balanceOf(account).call());
+	document.getElementById('stakedbalance').textContent = getbalance; 
 }
 
 class App extends Component {
@@ -696,26 +1024,26 @@ class App extends Component {
     await axios
       .get(
         endpoint +
-          `?module=stats&action=tokensupply&contractaddress=${ADDRESS}&apikey=${apikey}`
+          `?module=stats&action=tokensupply&contractaddress=${NFTCONTRACT}&apikey=${apikey}`
       )
       .then((outputa) => {
         this.setState({
           balance: outputa.data,
         });
-        console.log(outputa.data);
+        console.log("tokensupply", outputa.data);
       });
 
     await axios
       .get(
         endpoint +
-          `?module=account&action=tokennfttx&contractaddress=${ADDRESS}&page=1&offset=100&tag=latest&apikey=${apikey}`
+          `?module=account&action=tokennfttx&contractaddress=${NFTCONTRACT}&page=1&offset=100&tag=latest&apikey=${apikey}`
       )
       .then((outputb) => {
         const { result } = outputb.data;
         this.setState({
           nftdata: result,
         });
-        console.log(outputb.data);
+        console.log("tokennfttx", outputb.data);
       });
   }
 
@@ -770,6 +1098,29 @@ class App extends Component {
                 {" "}
                 Tokens Minted so far= {balance.result}/1000
               </h5>
+            </form>
+            <form class="gradient col-lg-3 mt-5 mr-3" style={{borderRadius:"25px",boxShadow:"1px 1px 15px #000000", marginRight:"5px"}}>
+              <h4 style={{color:"#FFFFFF"}}>Staking Vault</h4>
+              <h5 style={{color:"#FFFFFF"}}>Please connect your wallet</h5>
+                <div class="card" style={{marginTop:"3px",boxShadow:"1px 1px 4px #000000"}}>
+                <input type="number" name="stkid"/>
+                <label >Input NFT ID</label>
+                <Button onClick={stakeit}>STAKE</Button>
+              <Button onClick={unstakeit}>UNSTAKE</Button>
+                </div>
+            </form>
+            <form class="gradient col-lg-3 mt-5" style={{borderRadius:"25px",boxShadow:"1px 1px 15px #000000", marginRight:"5px"}}>
+              <h4 style={{color:"#FFFFFF"}}>NFT Vault Options</h4>
+            <h5 style={{color:"#FFFFFF"}}>Verify Amount Staked</h5>
+            <Button onClick={verify}>Verify</Button>
+            <div class="card" id='stakedbalance' style={{marginTop:"3px",boxShadow:"1px 1px 4px #000000"}}>
+                <label for="floatingInput">NFT Balance</label>
+                </div>
+                <div class="card" style={{marginTop:"3px",boxShadow:"1px 1px 4px #000000"}}>
+                <input type="number" name="claimid"/>
+                <label >Input NFT ID</label>
+              <Button onClick={claimit}>Claim Rewards</Button>
+                </div>
             </form>
             <div className="row items mt-3">
               <div

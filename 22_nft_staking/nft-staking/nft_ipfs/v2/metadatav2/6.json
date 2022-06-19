@@ -1,0 +1,20 @@
+{
+  "name": "BMV1 NFT Collection NFT #6",
+  "description": "BMV1 our first Web3 dApp NFT Collection. This unique collection 1 of 1000 NFTs available",
+  "image": "ipfs://QmQs9MyM262FjHVnuWtKX3CkWPzHzqJwyGwSiqCPTBJ5fR/6.png",
+  "edition": 6,
+  "attributes": [
+    {
+      "trait_type": "Order",
+      "value": "B"
+    },
+    {
+      "trait_type": "Name",
+      "value": "begonia-pink"
+    },
+    {
+      "trait_type": "Color",
+      "value": "pink"
+    }
+  ]
+}

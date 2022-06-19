@@ -12,6 +12,8 @@ module.exports = async ({
     getChainId
 }) => {
 
+
+
     const { deploy, log } = deployments
     const { deployer } = await getNamedAccounts()
     const chainId = await getChainId()
@@ -20,60 +22,45 @@ module.exports = async ({
     const networkName = networkConfig[chainId]['name']
 
     log("----------------------------------------------------")
-    const BMRewardsV1 = await deploy('BMRewardsV1', {
-        from: deployer,
-        log: true
-    })
+    const BMRewardsV1_Address = "0x56b945d26d9a2ab35e2ddf2ff22d5b3d5a0c621e";
+//     BMRewardsV1 to 0x56b945d26d9a2ab35e2ddf2ff22d5b3d5a0c621e
+// CollectionV1 to 0xB0395e01b0463Ff91D5d399ead8e0e93D7Eb8FD5
+// NFTStakingV1 to 0x522A22948E8A1D4c1c018188D36537A17d7C6D94
+
     const bmRewardsV1Contract = await ethers.getContractFactory("BMRewardsV1")
-    const bmRewardsV1 = new ethers.Contract(BMRewardsV1.address, bmRewardsV1Contract.interface, signer)    
+    const bmRewardsV1 = new ethers.Contract(BMRewardsV1_Address, bmRewardsV1Contract.interface, signer)    
 
-    const CollectionV1 = await deploy('CollectionV1', {
-        from: deployer,
-        log: true
-    })
+    const CollectionV1_Address = "0xB0395e01b0463Ff91D5d399ead8e0e93D7Eb8FD5";
     const collectionV1Contract = await ethers.getContractFactory("CollectionV1")
-    const collectionV1 = new ethers.Contract(CollectionV1.address, collectionV1Contract.interface, signer)    
+    const collectionV1 = new ethers.Contract(CollectionV1_Address, collectionV1Contract.interface, signer)    
 
-    const args = [CollectionV1.address, BMRewardsV1.address]
-    const NFTStakingV1 = await deploy('NFTStakingV1', {
-        from: deployer,
-        args: args,
-        log: true
-    })
+    
+    const NFTStakingV1_Address = "0x522A22948E8A1D4c1c018188D36537A17d7C6D94"
     const nftStakingV1Contract = await ethers.getContractFactory("NFTStakingV1")
-    const nftStakingV1 = new ethers.Contract(NFTStakingV1.address, nftStakingV1Contract.interface, signer)   
+    const nftStakingV1 = new ethers.Contract(NFTStakingV1_Address, nftStakingV1Contract.interface, signer)   
     
     log(`---- Deploy ----`);
-    log(`BMRewardsV1 to ${BMRewardsV1.address}`)
-    log(`CollectionV1 to ${CollectionV1.address}`)
-    log(`NFTStakingV1 to ${NFTStakingV1.address}`)    
-
-    log(`\n---- Verify ----`);
-    log(`1. Verify : BMRewardsV1  \n npx hardhat verify --network ${networkName} ${BMRewardsV1.address}`)
-    log(`2. Verify : CollectionV1  \n npx hardhat verify --network ${networkName} ${CollectionV1.address}`)
-    log(`3. Verify : NFTStakingV1  \n npx hardhat verify --network ${networkName} ${NFTStakingV1.address} ${CollectionV1.address} ${BMRewardsV1.address}`)
 
     // // Initialize
     // log(`\n\n--- Initialize and testing ---\n`);
     // // 1. Mint 3 NFT Token By Deployer
     // log("1. 3 NFT Token Mint by CollectionV1");
-    // const tx = await collectionV1.mint(deployer, 3);
-    // const totalsupply = await collectionV1.totalSupply();
     
     // log("2. Add Controller the staking address at Rewards");
-    // await bmRewardsV1.addController(nftStakingV1.address);
+    // console.log(nftStakingV1.address);
+    await bmRewardsV1.addController(nftStakingV1.address);
     
     // log("3. Run the setApprovalForAll(nftstaking address, true) by deployer");
-    // await collectionV1.setApprovalForAll(nftStakingV1.address, true);
-
+    await collectionV1.setApprovalForAll(nftStakingV1.address, true);
+    await nftStakingV1.unstake([1]);
     // const initBalance = await bmRewardsV1.balanceOf(deployer);
 
     // log("4. Run start stake 1");
     // await nftStakingV1.stake([1]);
     // // const vault = await nftStakingV1.vault(1);
     // // console.log(vault)
-    // // let owner = await nftStakingV1.tokensOfOwner(deployer);
-    // // console.log(owner)
+    let owner = await nftStakingV1.tokensOfOwner(deployer);
+    console.log(owner)
 
     // log("5. Run start stake 2, 3");
     // await nftStakingV1.stake([2,3]);
@@ -116,4 +103,4 @@ module.exports = async ({
     // await bmRewardsV1.addController(NFTStakingV1.address);
 }
 
-module.exports.tags = ['all', 'stakingv1']
+module.exports.tags = ['all', 'stakingv1_init']

@@ -19,7 +19,7 @@ contract CollectionV1 is ERC721Enumerable, Ownable {
     constructor() ERC721("BMV1 NFT Collection", "BMV1") {}
         // internal
         function _baseURI() internal view virtual override returns (string memory) {
-        return "ipfs://QmbRBNHPWjhghpvdBsAPA3DWRVwfpxG3WMLiZKuW51ydVx/";
+        return "ipfs://QmWiiLwJ9APoATNjFoGzHwdpMsFbZYuZx883Ppt6HndAYe/";
     }
         // public
 

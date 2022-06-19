@@ -235,7 +235,26 @@ $ npx hh deploy --tags stakingv2
 8. claim nft token 1
 9. Reward Token=11574074074074
 ```
+- Deploy Rinkeby
+```
+$ npx hh deploy --tags stakingv1 --network rinkeby
+---- Deploy ----
+BMRewardsV1 to 0x56b945d26d9a2ab35e2ddf2ff22d5b3d5a0c621e
+CollectionV1 to 0xB0395e01b0463Ff91D5d399ead8e0e93D7Eb8FD5
+NFTStakingV1 to 0x522A22948E8A1D4c1c018188D36537A17d7C6D94
 
+---- Verify ----
+1. Verify : BMRewardsV1
+ npx hardhat verify --network rinkeby 0x56b945d26d9a2ab35e2ddf2ff22d5b3d5a0c621e
+2. Verify : CollectionV1
+ npx hardhat verify --network rinkeby 0xB0395e01b0463Ff91D5d399ead8e0e93D7Eb8FD5
+3. Verify : NFTStakingV1
+ npx hardhat verify --network rinkeby 0x522A22948E8A1D4c1c018188D36537A17d7C6D94 0xB0395e01b0463Ff91D5d399ead8e0e93D7Eb8FD5 0x56b945d26d9a2ab35e2ddf2ff22d5b3d5a0c621e
+
+ npx hardhat verify --contract contracts/BMRewardsV1.sol:BMRewardsV1 --network rinkeby 0x56b945d26d9a2ab35e2ddf2ff22d5b3d5a0c621e
+ npx hardhat verify --contract contracts/CollectionV1.sol:CollectionV1 --network rinkeby 0xB0395e01b0463Ff91D5d399ead8e0e93D7Eb8FD5
+ npx hardhat verify --contract contracts/NFTStakingV1.sol:NFTStakingV1 --network rinkeby 0x522A22948E8A1D4c1c018188D36537A17d7C6D94 0xB0395e01b0463Ff91D5d399ead8e0e93D7Eb8FD5 0x56b945d26d9a2ab35e2ddf2ff22d5b3d5a0c621e
+```
 ### React APP
 ```
 $ npx create-react-app nft_staking_app

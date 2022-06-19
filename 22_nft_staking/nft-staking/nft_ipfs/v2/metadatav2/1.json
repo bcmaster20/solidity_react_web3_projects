@@ -1,0 +1,20 @@
+{
+  "name": "BMV1 NFT Collection NFT #1",
+  "description": "BMV1 our first Web3 dApp NFT Collection. This unique collection 1 of 1000 NFTs available",
+  "image": "ipfs://QmQs9MyM262FjHVnuWtKX3CkWPzHzqJwyGwSiqCPTBJ5fR/1.png",
+  "edition": 1,
+  "attributes": [
+    {
+      "trait_type": "Order",
+      "value": "A"
+    },
+    {
+      "trait_type": "Name",
+      "value": "acacia"
+    },
+    {
+      "trait_type": "Color",
+      "value": "whitesss"
+    }
+  ]
+}
