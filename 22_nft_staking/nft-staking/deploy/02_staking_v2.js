@@ -121,6 +121,8 @@ module.exports = async ({
     // log(claim.events[0].topics);
     // log(claim.events[1].topics);
     const rewardsBalance = await bmRewards.balanceOf(deployer);
+    log(`${initBalance.toString()}`)
+    log(`${rewardsBalance.toString()}`)
     log(`9. Reward Token=${rewardsBalance.sub(initBalance).toString()}`)
 }
 
