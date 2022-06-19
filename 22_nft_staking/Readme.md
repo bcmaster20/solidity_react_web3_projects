@@ -234,5 +234,11 @@ $ npx hh deploy --tags stakingv2
 7. Delay 3s
 8. claim nft token 1
 9. Reward Token=11574074074074
+```
 
+### React APP
+```
+$ npx create-react-app nft_staking_app
+$ cd nft_staking_app
+$ npm i web3 ethers react-bootstrap bootstrap axios
 ```
