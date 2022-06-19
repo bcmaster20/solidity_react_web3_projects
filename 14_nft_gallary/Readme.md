@@ -32,6 +32,7 @@ Remix Rinkeby Contract Address 0x0Bdc16387B85289aF8f2910e412B6510dc0C0b15
 package.json :  "react-scripts": "5.0.3"=>"4.0.3"
 $ npm uninstall webpack
 $ npm install webpack@4.44.2
+$ npm install
 ```
 
 ## Reference
