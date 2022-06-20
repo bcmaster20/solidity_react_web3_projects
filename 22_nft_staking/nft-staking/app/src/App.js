@@ -968,48 +968,9 @@ var vaultcontract = null;
 const apikey="76JSG3E5TVMY1U5QFKQZMTMMPVXKMCCGHT";
 const endpoint = "https://api-rinkeby.etherscan.io/api";
 const nftpng = "https://ipfs.io/ipfs/QmQs9MyM262FjHVnuWtKX3CkWPzHzqJwyGwSiqCPTBJ5fR/";
+const openseaapi = "https://testnets-api.opensea.io/api/v1/assets";
 
-async function connectwallet() {
-  if (window.ethereum) {
-    var web3 = new Web3(window.ethereum);
-    await window.ethereum.send("eth_requestAccounts");
-    var accounts = await web3.eth.getAccounts();
-    account = accounts[0];
-    document.getElementById("wallet-address").textContent = account;
-    contract = new web3.eth.Contract(ABI, NFTCONTRACT);
-    vaultcontract = new web3.eth.Contract(VAULTABI, STAKINGCONTRACT);
-  }
-}
-async function mint() {
-  if (window.ethereum) {
-    var _mintAmount = Number(document.querySelector("[name=amount]").value);
-    var mintRate = Number(await contract.methods.cost().call());
-    var totalAmount = mintRate * _mintAmount;
-    contract.methods
-      .mint(account, _mintAmount)
-      .send({ from: account, value: String(totalAmount) });
-  }
-}
 
-async function stakeit() {
-	var tokenids = Number(document.querySelector("[name=stkid]").value);
-	vaultcontract.methods.stake([tokenids]).send({from: account});
-}
-
-async function unstakeit() {
-	var tokenids = Number(document.querySelector("[name=stkid]").value);
-	vaultcontract.methods.unstake([tokenids]).send({from: account});
-}
-
-async function claimit() {
-	var tokenids = Number(document.querySelector("[name=claimid]").value);
-	vaultcontract.methods.claim([tokenids]).send({from: account});
-}
-
-async function verify() {
-	var getbalance = Number(await vaultcontract.methods.balanceOf(account).call());
-	document.getElementById('stakedbalance').textContent = getbalance; 
-}
 
 class App extends Component {
   constructor() {
@@ -1033,26 +994,85 @@ class App extends Component {
         console.log("tokensupply", outputa.data);
       });
 
-    await axios
-      .get(
-        endpoint +
-          `?module=account&action=tokennfttx&contractaddress=${NFTCONTRACT}&page=1&offset=100&tag=latest&apikey=${apikey}`
-      )
-      .then((outputb) => {
-        const { result } = outputb.data;
-        this.setState({
-          nftdata: result,
+    // await axios
+    //   .get(
+    //     endpoint +
+    //       `?module=account&action=tokennfttx&contractaddress=${NFTCONTRACT}&page=1&offset=100&tag=latest&apikey=${apikey}`
+    //   )
+    //   .then((outputb) => {
+    //     const { result } = outputb.data;
+    //     this.setState({
+    //       nftdata: result,
+    //     });
+    //     console.log("tokennfttx", outputb.data);
+    //   });
+    await axios.get((openseaapi + `?asset_contract_addresses=${NFTCONTRACT}&format=json&order_direction=asc&offset=0&limit=20`))
+		.then(outputb => {
+			const { assets } = outputb.data
+            this.setState({
+                nftdata:assets
+            })
+            console.log(outputb.data)
         });
-        console.log("tokennfttx", outputb.data);
-      });
+
   }
+
+
+
 
   render() {
     const { balance } = this.state;
     const { nftdata } = this.state;
 
+    async function connectwallet() {
+      if (window.ethereum) {
+        var web3 = new Web3(window.ethereum);
+        await window.ethereum.send("eth_requestAccounts");
+        var accounts = await web3.eth.getAccounts();
+        account = accounts[0];
+        document.getElementById("wallet-address").textContent = account;
+        contract = new web3.eth.Contract(ABI, NFTCONTRACT);
+        vaultcontract = new web3.eth.Contract(VAULTABI, STAKINGCONTRACT);
+      }
+    }
+    async function mint() {
+      if (window.ethereum) {
+        var _mintAmount = Number(document.querySelector("[name=amount]").value);
+        var mintRate = Number(await contract.methods.cost().call());
+        var totalAmount = mintRate * _mintAmount;
+        contract.methods
+          .mint(account, _mintAmount)
+          .send({ from: account, value: String(totalAmount) });
+      }
+    }
+    
+    // async function stakeit() {
+    //   var tokenids = Number(document.querySelector("[name=stkid]").value);
+    //   vaultcontract.methods.stake([tokenids]).send({from: account});
+    // }
+    
+    // async function unstakeit() {
+    //   var tokenids = Number(document.querySelector("[name=stkid]").value);
+    //   vaultcontract.methods.unstake([tokenids]).send({from: account});
+    // }
+    
+    async function claimit() {
+      var tokenids = Number(document.querySelector("[name=claimid]").value);
+      vaultcontract.methods.claim([tokenids]).send({from: account});
+    }
+    
+    async function verify() {
+      var getbalance = Number(await vaultcontract.methods.balanceOf(account).call());
+      document.getElementById('stakedbalance').textContent = getbalance; 
+    }
+    
+    async function enable() {
+      contract.methods.setApprovalForAll(STAKINGCONTRACT, true).send({from: account});
+    }    
     return (
       <div className="App">
+        <Button onClick={connectwallet} style={{marginBottom:"5px",marginTop:"5px",color:"#FFFFFF", marginRight:'3px'}}>Connect Wallet</Button>
+        <Button onClick={enable}>Enable Staking</Button>        
         <div className="container">
           <div className="row">
             <form
@@ -1064,12 +1084,6 @@ class App extends Component {
             >
               <h4 style={{ color: "#FFFFFF" }}>Mint Portal</h4>
               <h5 style={{ color: "#FFFFFF" }}>Please connect your wallet</h5>
-              <Button
-                onClick={connectwallet}
-                style={{ marginBottom: "5px", color: "#FFFFFF" }}
-              >
-                Connect Wallet
-              </Button>
               <div
                 class="card"
                 id="wallet-address"
@@ -1101,13 +1115,6 @@ class App extends Component {
             </form>
             <form class="gradient col-lg-3 mt-5 mr-3" style={{borderRadius:"25px",boxShadow:"1px 1px 15px #000000", marginRight:"5px"}}>
               <h4 style={{color:"#FFFFFF"}}>Staking Vault</h4>
-              <h5 style={{color:"#FFFFFF"}}>Please connect your wallet</h5>
-                <div class="card" style={{marginTop:"3px",boxShadow:"1px 1px 4px #000000"}}>
-                <input type="number" name="stkid"/>
-                <label >Input NFT ID</label>
-                <Button onClick={stakeit}>STAKE</Button>
-              <Button onClick={unstakeit}>UNSTAKE</Button>
-                </div>
             </form>
             <form class="gradient col-lg-3 mt-5" style={{borderRadius:"25px",boxShadow:"1px 1px 15px #000000", marginRight:"5px"}}>
               <h4 style={{color:"#FFFFFF"}}>NFT Vault Options</h4>
@@ -1131,42 +1138,31 @@ class App extends Component {
                   columnGap: "10px",
                 }}
               >
-                {nftdata.map((result) => {
+                {nftdata.map((assets, i) => {
+                  async function stakeit() {
+                    vaultcontract.methods.stake([assets.token_id]).send({from: account});
+                  }
+                  async function unstakeit() {
+                    vaultcontract.methods.unstake([assets.token_id]).send({from: account});
+                  }                  
+
                   return (
-                    <div className="card">
+                    <div className="card mt-3" key={i} >
                       <div className="image-over">
-                        <img
-                          className="card-img-top"
-                          src={nftpng + result.tokenID + ".png"}
-                          alt=""
-                        />
+                        <img className="card-img-top"  src={nftpng + assets.token_id +'.png'} alt="" />
                       </div>
                       <div className="card-caption col-12 p-0">
                         <div className="card-body">
-                          <h5 className="mb-0">
-                            Net2Dev Collection NFT #{result.tokenID}
-                          </h5>
-                          <h5 className="mb-0 mt-2">
-                            Owner Wallet:
-                            <p
-                              style={{
-                                color: "#39FF14",
-                                fontWeight: "bold",
-                                textShadow: "1px 1px 2px #000000",
-                              }}
-                            >
-                              {result.to}
-                            </p>
-                          </h5>
+                          <h5 className="mb-0">Net2Dev Collection NFT #{assets.token_id}</h5>
+                          <h5 className="mb-0 mt-2">Location Status<p style={{color:"#39FF14",fontWeight:"bold",textShadow:"1px 1px 2px #000000"}}>{assets.owner.address}</p></h5>
                           <div className="card-bottom d-flex justify-content-between">
-                            <Button className="btn btn-bordered-white btn-smaller mt-3">
-                              <i className="mr-2" />
-                              Buy Now
-                            </Button>
+                              <input key={i} type="hidden" id='stakeid' value={assets.token_id} />
+                              <Button className="mb-2 mt-3 col-5" style={{marginLeft:'2px'}} onClick={stakeit}>Stake it</Button>
+                              <Button className="mb-2 mt-3 col-5" style={{marginLeft:'2px'}} onClick={unstakeit}>Unstake it</Button>
                           </div>
                         </div>
                       </div>
-                    </div>
+                    </div>                    
                   );
                 })}
               </div>
