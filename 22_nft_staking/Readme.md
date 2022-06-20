@@ -184,6 +184,44 @@ $ npx hh deploy stakingv1
 9. Reward Token=34722222222222
 ```
 
+- Deploy Rinkeby
+```
+$ npx hh deploy --tags stakingv1 --network rinkeby
+---- Deploy ----
+BMRewardsV1 to 0x56b945d26d9a2ab35e2ddf2ff22d5b3d5a0c621e
+CollectionV1 to 0xB0395e01b0463Ff91D5d399ead8e0e93D7Eb8FD5
+NFTStakingV1 to 0x522A22948E8A1D4c1c018188D36537A17d7C6D94
+
+---- Verify ----
+1. Verify : BMRewardsV1
+ npx hardhat verify --network rinkeby 0x56b945d26d9a2ab35e2ddf2ff22d5b3d5a0c621e
+2. Verify : CollectionV1
+ npx hardhat verify --network rinkeby 0xB0395e01b0463Ff91D5d399ead8e0e93D7Eb8FD5
+3. Verify : NFTStakingV1
+ npx hardhat verify --network rinkeby 0x522A22948E8A1D4c1c018188D36537A17d7C6D94 0xB0395e01b0463Ff91D5d399ead8e0e93D7Eb8FD5 0x56b945d26d9a2ab35e2ddf2ff22d5b3d5a0c621e
+
+ npx hardhat verify --contract contracts/BMRewardsV1.sol:BMRewardsV1 --network rinkeby 0x56b945d26d9a2ab35e2ddf2ff22d5b3d5a0c621e
+ npx hardhat verify --contract contracts/CollectionV1.sol:CollectionV1 --network rinkeby 0xB0395e01b0463Ff91D5d399ead8e0e93D7Eb8FD5
+ npx hardhat verify --contract contracts/NFTStakingV1.sol:NFTStakingV1 --network rinkeby 0x522A22948E8A1D4c1c018188D36537A17d7C6D94 0xB0395e01b0463Ff91D5d399ead8e0e93D7Eb8FD5 0x56b945d26d9a2ab35e2ddf2ff22d5b3d5a0c621e
+```
+
+- Deploy Polygon
+```
+npx hh deploy --tags stakingv1 --network mumbai
+---- Deploy ----
+BMRewardsV1 to 0xe3B078C946f799828685bAA523c8B3218C68cF5b
+CollectionV1 to 0x6A782Dc1663419d5b4E4f956d8e40c35721aeb59
+NFTStakingV1 to 0xCd44c67F8f8B0F10D2A955F5B6B5E6Cc36437E07
+
+---- Verify ----
+1. Verify : BMRewardsV1
+ npx hardhat verify --contract contracts/BMRewardsV1.sol:BMRewardsV1 --network mumbai 0xe3B078C946f799828685bAA523c8B3218C68cF5b
+2. Verify : CollectionV1
+ npx hardhat verify --contract contracts/CollectionV1.sol:CollectionV1 --network mumbai 0x6A782Dc1663419d5b4E4f956d8e40c35721aeb59
+3. Verify : NFTStakingV1
+ npx hardhat verify --contract contracts/NFTStakingV1.sol:NFTStakingV1 --network mumbai 0xCd44c67F8f8B0F10D2A955F5B6B5E6Cc36437E07 0x6A782Dc1663419d5b4E4f956d8e40c35721aeb59 0xe3B078C946f799828685bAA523c8B3218C68cF5b
+```
+
 ### NFTStaking Multi Token
 - Test Code
 ```
@@ -235,46 +273,51 @@ $ npx hh deploy --tags stakingv2
 8. claim nft token 1
 9. Reward Token=11574074074074
 ```
-- Deploy Rinkeby
-```
-$ npx hh deploy --tags stakingv1 --network rinkeby
----- Deploy ----
-BMRewardsV1 to 0x56b945d26d9a2ab35e2ddf2ff22d5b3d5a0c621e
-CollectionV1 to 0xB0395e01b0463Ff91D5d399ead8e0e93D7Eb8FD5
-NFTStakingV1 to 0x522A22948E8A1D4c1c018188D36537A17d7C6D94
-
----- Verify ----
-1. Verify : BMRewardsV1
- npx hardhat verify --network rinkeby 0x56b945d26d9a2ab35e2ddf2ff22d5b3d5a0c621e
-2. Verify : CollectionV1
- npx hardhat verify --network rinkeby 0xB0395e01b0463Ff91D5d399ead8e0e93D7Eb8FD5
-3. Verify : NFTStakingV1
- npx hardhat verify --network rinkeby 0x522A22948E8A1D4c1c018188D36537A17d7C6D94 0xB0395e01b0463Ff91D5d399ead8e0e93D7Eb8FD5 0x56b945d26d9a2ab35e2ddf2ff22d5b3d5a0c621e
-
- npx hardhat verify --contract contracts/BMRewardsV1.sol:BMRewardsV1 --network rinkeby 0x56b945d26d9a2ab35e2ddf2ff22d5b3d5a0c621e
- npx hardhat verify --contract contracts/CollectionV1.sol:CollectionV1 --network rinkeby 0xB0395e01b0463Ff91D5d399ead8e0e93D7Eb8FD5
- npx hardhat verify --contract contracts/NFTStakingV1.sol:NFTStakingV1 --network rinkeby 0x522A22948E8A1D4c1c018188D36537A17d7C6D94 0xB0395e01b0463Ff91D5d399ead8e0e93D7Eb8FD5 0x56b945d26d9a2ab35e2ddf2ff22d5b3d5a0c621e
-```
 
 - Deploy Polygon
 ```
-npx hh deploy --tags stakingv1 --network mumbai
----- Deploy ----
-BMRewardsV1 to 0xe3B078C946f799828685bAA523c8B3218C68cF5b
-CollectionV1 to 0x6A782Dc1663419d5b4E4f956d8e40c35721aeb59
-NFTStakingV1 to 0xCd44c67F8f8B0F10D2A955F5B6B5E6Cc36437E07
+npx hh deploy --tags stakingv2 --network mumbai
+----- Token Three BMRewards, USDT, APE ----
+BMRewards to 0x8e9CB9c8F54c6Db908731076e9A48903B849d585
+USDT to 0xbB5B370bb1F7012492162aae57C856bCc84E8a07
+MATIC to 0xB295A2fb002763bd5d1cf6E1821D2cd582993AB7
 
----- Verify ----
-1. Verify : BMRewardsV1
- npx hardhat verify --contract contracts/BMRewardsV1.sol:BMRewardsV1 --network mumbai 0xe3B078C946f799828685bAA523c8B3218C68cF5b
-2. Verify : CollectionV1
- npx hardhat verify --contract contracts/CollectionV1.sol:CollectionV1 --network mumbai 0x6A782Dc1663419d5b4E4f956d8e40c35721aeb59
-3. Verify : NFTStakingV1
- npx hardhat verify --contract contracts/NFTStakingV1.sol:NFTStakingV1 --network mumbai 0xCd44c67F8f8B0F10D2A955F5B6B5E6Cc36437E07 0x6A782Dc1663419d5b4E4f956d8e40c35721aeb59 0xe3B078C946f799828685bAA523c8B3218C68cF5b
+----- Collection ----
+Collection to 0x41AbEA025c7BE5175b1C0dB105428AD0173ABBd8
+
+----- Staking ----
+NFTStaking to 0x0A1282Ac30a5212E4356fc9CeCF2130eaCb8Db9D
+
+----- Verify ----
+
+----- Token Three BMRewards, USDT, APE ----
+1. Verify : BMRewards
+ npx hardhat verify --contract contracts/BMRewards.sol:BMRewards --network mumbai 0x8e9CB9c8F54c6Db908731076e9A48903B849d585
+2. Verify : USDT
+ npx hardhat verify --contract contracts/USDT.sol:USDT --network mumbai 0xbB5B370bb1F7012492162aae57C856bCc84E8a07
+3. Verify : APE
+ npx hardhat verify --contract contracts/APE.sol:APE --network mumbai 0xB295A2fb002763bd5d1cf6E1821D2cd582993AB7
+
+----- Collection ----
+4. Verify : Collection
+ npx hardhat verify --contract contracts/Collection.sol:Collection --network mumbai 0x41AbEA025c7BE5175b1C0dB105428AD0173ABBd8
+
+----- Staking ----
+5. Verify : NFTStaking
+ npx hardhat verify --contract contracts/NFTStaking.sol:NFTStaking --network mumbai 0x0A1282Ac30a5212E4356fc9CeCF2130eaCb8Db9D 0x41AbEA025c7BE5175b1C0dB105428AD0173ABBd8 0x8e9CB9c8F54c6Db908731076e9A48903B849d585
+
+----- Initialize and test ----
+
+1. collection: add currency
+Cost Per NFT: 30 BMR, 150 USDT, 25 APE
+
 ```
-### React APP
+
+## Front React Staking APP (app)
 ```
 $ npx create-react-app nft_staking_app
 $ cd nft_staking_app
 $ npm i web3 ethers react-bootstrap bootstrap axios
 ```
+
+## Front React NFT Mint APP (app_mint)

@@ -74,10 +74,6 @@ module.exports = async ({
     log(`Collection to ${Collection.address}`)
     log(`\n----- Staking ----`)
     log(`NFTStaking to ${NFTStaking.address}`)
-    log(`1. Verify : BMRewardsV1  \n npx hardhat verify --contract contracts/BMRewardsV1.sol:BMRewardsV1 --network ${networkName} ${BMRewardsV1.address}`)
-    log(`2. Verify : CollectionV1  \n npx hardhat verify --contract contracts/CollectionV1.sol:CollectionV1 --network ${networkName} ${CollectionV1.address}`)
-    log(`3. Verify : NFTStakingV1  \n npx hardhat verify --contract contracts/NFTStakingV1.sol:NFTStakingV1 --network ${networkName} ${NFTStakingV1.address} ${CollectionV1.address} ${BMRewardsV1.address}`)
-
 
     log(`\n----- Verify ----\n`)
     log(`----- Token Three BMRewards, USDT, APE ----`)
@@ -96,7 +92,8 @@ module.exports = async ({
     await collection.addCurrency(BMRewards.address, ethers.utils.parseEther("30"));
     await collection.addCurrency(USDT.address, ethers.utils.parseEther("150"));
     await collection.addCurrency(APE.address, ethers.utils.parseEther("25"));
-
+    await bmRewards.addController(NFTStaking.address);
+    
     // console.log((await collection.AllowedCrypto(0)).costvalue.toString());
 
     // log(`2. bmRewards : approve bmrewards for nft mint at collection`)    

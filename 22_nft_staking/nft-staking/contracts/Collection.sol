@@ -42,7 +42,23 @@ contract Collection is ERC721Enumerable, Ownable {
       return "ipfs://QmXj7aCcBWYztpm9vm27cBc2V77ybMRHgwh9Qh1wKvgz8P/";
   }
 
-  function mint(address _to, uint256 _mintAmount, uint256 _pid) public payable {
+  function mint(address _to, uint256 _mintAmount) public payable {
+    uint256 supply = totalSupply();
+    require(!paused);
+    require(_mintAmount > 0);
+    require(_mintAmount <= maxMintAmount);
+    require(supply + _mintAmount <= maxSupply);
+    
+    if (msg.sender != owner()) {
+    require(msg.value == cost * _mintAmount, "Not enough balance to complete transaction.");
+    }
+    
+    for (uint256 i = 1; i <= _mintAmount; i++) {
+        _safeMint(_to, supply + i);
+    }
+  }
+
+  function mintpid(address _to, uint256 _mintAmount, uint256 _pid) public payable {
       TokenInfo storage tokens = AllowedCrypto[_pid];
       IERC20 paytoken;
       paytoken = tokens.paytoken;
