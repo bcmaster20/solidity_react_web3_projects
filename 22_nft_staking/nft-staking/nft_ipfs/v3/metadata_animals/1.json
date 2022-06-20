@@ -1,0 +1,20 @@
+{
+  "name": "BMA NFT Collection NFT #1",
+  "description": "BMA our first Web3 dApp NFT Collection. This unique collection 1 of 1000 NFTs available",
+  "image": "ipfs://Qmdehc2HZ1N8BpGUyAzTsAUNPbnnjH1DkXaRM2WQsHr5MV/1.png",
+  "edition": 1,
+  "attributes": [
+    {
+      "trait_type": "Order",
+      "value": "C"
+    },
+    {
+      "trait_type": "Name",
+      "value": "cat"
+    },
+    {
+      "trait_type": "Color",
+      "value": "whitesss"
+    }
+  ]
+}

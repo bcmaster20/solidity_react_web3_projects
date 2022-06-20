@@ -22,8 +22,9 @@ contract Collection is ERC721Enumerable, Ownable {
   uint256 public maxSupply = 1000;
   uint256 public maxMintAmount = 5;
   bool public paused = false;
+  uint256 public cost = 0.005 ether;  
 
-  constructor() ERC721("BMV NFT Collection", "BMV") {}
+  constructor() ERC721("BMA NFT Collection", "BMA") {}
 
   function addCurrency(
       IERC20 _paytoken,
@@ -38,7 +39,7 @@ contract Collection is ERC721Enumerable, Ownable {
   }
 
   function _baseURI() internal view virtual override returns (string memory) {
-      return "ipfs://QmbRBNHPWjhghpvdBsAPA3DWRVwfpxG3WMLiZKuW51ydVx/";
+      return "ipfs://QmXj7aCcBWYztpm9vm27cBc2V77ybMRHgwh9Qh1wKvgz8P/";
   }
 
   function mint(address _to, uint256 _mintAmount, uint256 _pid) public payable {
@@ -111,7 +112,21 @@ contract Collection is ERC721Enumerable, Ownable {
       function pause(bool _state) public onlyOwner() {
           paused = _state;
       }
-      
+
+      function getNFTCost(uint256 _pid) public view virtual returns(uint256) {
+          TokenInfo storage tokens = AllowedCrypto[_pid];
+          uint256 cost;
+          cost = tokens.costvalue;
+          return cost;
+      }
+
+      function getCryptotoken(uint256 _pid) public view virtual returns(IERC20) {
+          TokenInfo storage tokens = AllowedCrypto[_pid];
+          IERC20 paytoken;
+          paytoken = tokens.paytoken;
+          return paytoken;
+      }      
+
       function withdraw(uint256 _pid) public payable onlyOwner() {
           TokenInfo storage tokens = AllowedCrypto[_pid];
           IERC20 paytoken;

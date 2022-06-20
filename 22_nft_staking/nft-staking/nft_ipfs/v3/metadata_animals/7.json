@@ -1,0 +1,20 @@
+{
+  "name": "BMA NFT Collection NFT #7",
+  "description": "BMA our first Web3 dApp NFT Collection. This unique collection 1 of 1000 NFTs available",
+  "image": "ipfs://Qmdehc2HZ1N8BpGUyAzTsAUNPbnnjH1DkXaRM2WQsHr5MV/7.png",
+  "edition": 7,
+  "attributes": [
+    {
+      "trait_type": "Order",
+      "value": "C"
+    },
+    {
+      "trait_type": "Name",
+      "value": "koala"
+    },
+    {
+      "trait_type": "Color",
+      "value": "grey"
+    }
+  ]
+}
