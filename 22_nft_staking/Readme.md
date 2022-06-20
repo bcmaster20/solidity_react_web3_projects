@@ -255,6 +255,23 @@ NFTStakingV1 to 0x522A22948E8A1D4c1c018188D36537A17d7C6D94
  npx hardhat verify --contract contracts/CollectionV1.sol:CollectionV1 --network rinkeby 0xB0395e01b0463Ff91D5d399ead8e0e93D7Eb8FD5
  npx hardhat verify --contract contracts/NFTStakingV1.sol:NFTStakingV1 --network rinkeby 0x522A22948E8A1D4c1c018188D36537A17d7C6D94 0xB0395e01b0463Ff91D5d399ead8e0e93D7Eb8FD5 0x56b945d26d9a2ab35e2ddf2ff22d5b3d5a0c621e
 ```
+
+- Deploy Polygon
+```
+npx hh deploy --tags stakingv1 --network mumbai
+---- Deploy ----
+BMRewardsV1 to 0xe3B078C946f799828685bAA523c8B3218C68cF5b
+CollectionV1 to 0x6A782Dc1663419d5b4E4f956d8e40c35721aeb59
+NFTStakingV1 to 0xCd44c67F8f8B0F10D2A955F5B6B5E6Cc36437E07
+
+---- Verify ----
+1. Verify : BMRewardsV1
+ npx hardhat verify --contract contracts/BMRewardsV1.sol:BMRewardsV1 --network mumbai 0xe3B078C946f799828685bAA523c8B3218C68cF5b
+2. Verify : CollectionV1
+ npx hardhat verify --contract contracts/CollectionV1.sol:CollectionV1 --network mumbai 0x6A782Dc1663419d5b4E4f956d8e40c35721aeb59
+3. Verify : NFTStakingV1
+ npx hardhat verify --contract contracts/NFTStakingV1.sol:NFTStakingV1 --network mumbai 0xCd44c67F8f8B0F10D2A955F5B6B5E6Cc36437E07 0x6A782Dc1663419d5b4E4f956d8e40c35721aeb59 0xe3B078C946f799828685bAA523c8B3218C68cF5b
+```
 ### React APP
 ```
 $ npx create-react-app nft_staking_app

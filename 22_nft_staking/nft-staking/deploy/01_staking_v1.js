@@ -18,6 +18,7 @@ module.exports = async ({
     const accounts = await hre.ethers.getSigners()
     const signer = accounts[0]
     const networkName = networkConfig[chainId]['name']
+    console.log(networkName);
 
     log("----------------------------------------------------")
     const BMRewardsV1 = await deploy('BMRewardsV1', {
@@ -49,9 +50,9 @@ module.exports = async ({
     log(`NFTStakingV1 to ${NFTStakingV1.address}`)    
 
     log(`\n---- Verify ----`);
-    log(`1. Verify : BMRewardsV1  \n npx hardhat verify --network ${networkName} ${BMRewardsV1.address}`)
-    log(`2. Verify : CollectionV1  \n npx hardhat verify --network ${networkName} ${CollectionV1.address}`)
-    log(`3. Verify : NFTStakingV1  \n npx hardhat verify --network ${networkName} ${NFTStakingV1.address} ${CollectionV1.address} ${BMRewardsV1.address}`)
+    log(`1. Verify : BMRewardsV1  \n npx hardhat verify --contract contracts/BMRewardsV1.sol:BMRewardsV1 --network ${networkName} ${BMRewardsV1.address}`)
+    log(`2. Verify : CollectionV1  \n npx hardhat verify --contract contracts/CollectionV1.sol:CollectionV1 --network ${networkName} ${CollectionV1.address}`)
+    log(`3. Verify : NFTStakingV1  \n npx hardhat verify --contract contracts/NFTStakingV1.sol:NFTStakingV1 --network ${networkName} ${NFTStakingV1.address} ${CollectionV1.address} ${BMRewardsV1.address}`)
 
     // // Initialize
     // log(`\n\n--- Initialize and testing ---\n`);
@@ -61,7 +62,7 @@ module.exports = async ({
     // const totalsupply = await collectionV1.totalSupply();
     
     // log("2. Add Controller the staking address at Rewards");
-    // await bmRewardsV1.addController(nftStakingV1.address);
+    await bmRewardsV1.addController(nftStakingV1.address);
     
     // log("3. Run the setApprovalForAll(nftstaking address, true) by deployer");
     // await collectionV1.setApprovalForAll(nftStakingV1.address, true);
