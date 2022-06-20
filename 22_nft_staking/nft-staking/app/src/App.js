@@ -960,13 +960,24 @@ const VAULTABI = [
   }
 ];
 
-const NFTCONTRACT = "0xB0395e01b0463Ff91D5d399ead8e0e93D7Eb8FD5";
-const STAKINGCONTRACT = "0x522A22948E8A1D4c1c018188D36537A17d7C6D94";
 var account = null;
 var contract = null;
 var vaultcontract = null;
-const apikey="76JSG3E5TVMY1U5QFKQZMTMMPVXKMCCGHT";
-const endpoint = "https://api-rinkeby.etherscan.io/api";
+// Rinkeby
+// const NFTCONTRACT = "0xB0395e01b0463Ff91D5d399ead8e0e93D7Eb8FD5";
+// const STAKINGCONTRACT = "0x522A22948E8A1D4c1c018188D36537A17d7C6D94";
+// const apikey="76JSG3E5TVMY1U5QFKQZMTMMPVXKMCCGHT";
+// const endpoint = "https://api-rinkeby.etherscan.io/api";
+
+// mumbai
+const NFTCONTRACT = "0x6A782Dc1663419d5b4E4f956d8e40c35721aeb59";
+const STAKINGCONTRACT = "0xCd44c67F8f8B0F10D2A955F5B6B5E6Cc36437E07";
+const endpoint = "https://api-testnet.polygonscan.com/api";
+const polygonscanapikey = "84ZBB5NVIMT5U6U6DTAFKCJTGJAE8IF5RQ";
+const apikey="84ZBB5NVIMT5U6U6DTAFKCJTGJAE8IF5RQ";
+const moralisapi = "https://deep-index.moralis.io/api/v2/";
+const moralisapikey = "7IHsNlGsGVzsqoqxOXCgnO1eqx3lZ5Xlh1A9GPLZCVkUZ7LLA4eUDdj9wdyknOoL";
+
 const nftpng = "https://ipfs.io/ipfs/QmQs9MyM262FjHVnuWtKX3CkWPzHzqJwyGwSiqCPTBJ5fR/";
 const openseaapi = "https://testnets-api.opensea.io/api/v1/assets";
 
@@ -1006,14 +1017,23 @@ class App extends Component {
     //     });
     //     console.log("tokennfttx", outputb.data);
     //   });
-    await axios.get((openseaapi + `?asset_contract_addresses=${NFTCONTRACT}&format=json&order_direction=asc&offset=0&limit=20`))
+    // await axios.get((openseaapi + `?asset_contract_addresses=${NFTCONTRACT}&format=json&order_direction=asc&offset=0&limit=20`))
+		// .then(outputb => {
+		// 	const { assets } = outputb.data
+    //         this.setState({
+    //             nftdata:assets
+    //         })
+    //         console.log(outputb.data)
+    // });
+    let config = {'X-API-Key': moralisapikey, 'accept': 'application/json'};
+    await axios.get((moralisapi + `/nft/${NFTCONTRACT}/owners?chain=mumbai&format=decimal`), {headers: config})
 		.then(outputb => {
-			const { assets } = outputb.data
-            this.setState({
-                nftdata:assets
-            })
-            console.log(outputb.data)
-        });
+			const { result } = outputb.data
+      console.log(result);
+      this.setState({
+          nftdata:result
+      })
+    });
 
   }
 
@@ -1169,7 +1189,7 @@ class App extends Component {
                       <div className="card-caption col-12 p-0">
                         <div className="card-body">
                           <h5 className="mb-0">Net2Dev Collection NFT #{assets.token_id}</h5>
-                          <h5 className="mb-0 mt-2">Location Status<p style={{color:"#39FF14",fontWeight:"bold",textShadow:"1px 1px 2px #000000"}}>{assets.owner.address}</p></h5>
+                          <h5 className="mb-0 mt-2">Location Status<p style={{color:"#39FF14",fontWeight:"bold",textShadow:"1px 1px 2px #000000"}}>{assets.owner_of}</p></h5>
                           <div className="card-bottom d-flex justify-content-between">
                               <input key={i} type="hidden" id='stakeid' value={assets.token_id} />
                               <Button className="mb-2 mt-3 col-5" style={{marginLeft:'2px'}} onClick={stakeit}>Stake it</Button>
