@@ -1057,7 +1057,7 @@ class App extends Component {
     // }
     
     async function claimit() {
-      var tokenids = Number(document.querySelector("[name=claimid]").value);
+      var tokenids = Number(document.querySelector("[name=stkid]").value);
       vaultcontract.methods.claim([tokenids]).send({from: account});
     }
     
