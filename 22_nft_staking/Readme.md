@@ -116,8 +116,8 @@ npm i magic-sdk
 
 ### Reference
  - [SmartContract](https://www.youtube.com/watch?v=-48_hdo9_gg)
- - [Full-Blockchain-Course] (https://github.com/smartcontractkit/full-blockchain-solidity-course-js)
- - [solidity example staking] (https://solidity-by-example.org/defi/staking-rewards/)
+ - [FullBlockchain] (https://github.com/smartcontractkit/full-blockchain-solidity-course-js)
+ - [SolidityExample] (https://solidity-by-example.org/defi/staking-rewards/)
  - [FrontEnd](https://www.youtube.com/watch?v=5vhVInexaUI)
  - [Tailwindcss For Nextjs](https://tailwindcss.com/docs/guides/nextjs)
 
@@ -321,3 +321,12 @@ $ npm i web3 ethers react-bootstrap bootstrap axios
 ```
 
 ## Front React NFT Mint APP (app_mint)
+```
+npm i react-bootstrap
+npm i web3
+npm i --save web3modal
+npm i @walletconnect/web3-provider
+npm i sf-font
+npm i @web3-react/walletlink-connector
+npm i walletlink
+```

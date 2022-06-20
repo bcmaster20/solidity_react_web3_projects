@@ -1,10 +1,16 @@
 // import Component from 'react';
 import './App.css';
-import Button from 'react-bootstrap/Button';
+// import Button from 'react-bootstrap/Button';
+import { Button, ButtonToolbar,ButtonGroup, Modal } from 'react-bootstrap'; 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Web3 from 'web3';
 import axios from 'axios';
 import React, { Component } from 'react';
+import Web3Modal from "web3modal";
+import WalletConnectProvider from "@walletconnect/web3-provider";
+import WalletLink from "walletlink";
+import "sf-font";
+
 const ABI = [
   {
     "inputs": [],
@@ -108,6 +114,48 @@ const ABI = [
   {
     "inputs": [
       {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "AllowedCrypto",
+    "outputs": [
+      {
+        "internalType": "contract IERC20",
+        "name": "paytoken",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "costvalue",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "contract IERC20",
+        "name": "_paytoken",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_costvalue",
+        "type": "uint256"
+      }
+    ],
+    "name": "addCurrency",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "address",
         "name": "to",
         "type": "address"
@@ -203,6 +251,44 @@ const ABI = [
   {
     "inputs": [
       {
+        "internalType": "uint256",
+        "name": "_pid",
+        "type": "uint256"
+      }
+    ],
+    "name": "getCryptotoken",
+    "outputs": [
+      {
+        "internalType": "contract IERC20",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_pid",
+        "type": "uint256"
+      }
+    ],
+    "name": "getNFTCost",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "address",
         "name": "owner",
         "type": "address"
@@ -264,6 +350,29 @@ const ABI = [
       }
     ],
     "name": "mint",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_to",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_mintAmount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_pid",
+        "type": "uint256"
+      }
+    ],
+    "name": "mintpid",
     "outputs": [],
     "stateMutability": "payable",
     "type": "function"
@@ -617,7 +726,13 @@ const ABI = [
     "type": "function"
   },
   {
-    "inputs": [],
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_pid",
+        "type": "uint256"
+      }
+    ],
     "name": "withdraw",
     "outputs": [],
     "stateMutability": "payable",
@@ -960,28 +1075,475 @@ const VAULTABI = [
   }
 ];
 
+var TOKENABI = [
+  {
+    "inputs": [],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "spender",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "value",
+        "type": "uint256"
+      }
+    ],
+    "name": "Approval",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "previousOwner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "OwnershipTransferred",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "from",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "value",
+        "type": "uint256"
+      }
+    ],
+    "name": "Transfer",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "controller",
+        "type": "address"
+      }
+    ],
+    "name": "addController",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "spender",
+        "type": "address"
+      }
+    ],
+    "name": "allowance",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "spender",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "approve",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "balanceOf",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "burn",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "burnFrom",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "decimals",
+    "outputs": [
+      {
+        "internalType": "uint8",
+        "name": "",
+        "type": "uint8"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "spender",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "subtractedValue",
+        "type": "uint256"
+      }
+    ],
+    "name": "decreaseAllowance",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "spender",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "addedValue",
+        "type": "uint256"
+      }
+    ],
+    "name": "increaseAllowance",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "maxSupply",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "pure",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "mint",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "name",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "owner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "controller",
+        "type": "address"
+      }
+    ],
+    "name": "removeController",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "renounceOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "symbol",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "totalSupply",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "transfer",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "from",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "transferFrom",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "transferOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+];
+
 var account = null;
 var contract = null;
 var vaultcontract = null;
+var web3 = null;
 // Rinkeby
 // const NFTCONTRACT = "0xB0395e01b0463Ff91D5d399ead8e0e93D7Eb8FD5";
 // const STAKINGCONTRACT = "0x522A22948E8A1D4c1c018188D36537A17d7C6D94";
 // const apikey="76JSG3E5TVMY1U5QFKQZMTMMPVXKMCCGHT";
 // const endpoint = "https://api-rinkeby.etherscan.io/api";
+//const openseaapi = "https://testnets-api.opensea.io/api/v1/assets";
 
 // mumbai
-const NFTCONTRACT = "0x6A782Dc1663419d5b4E4f956d8e40c35721aeb59";
-const STAKINGCONTRACT = "0xCd44c67F8f8B0F10D2A955F5B6B5E6Cc36437E07";
-const endpoint = "https://api-testnet.polygonscan.com/api";
+const NFTCONTRACT = "0x41AbEA025c7BE5175b1C0dB105428AD0173ABBd8";
+const STAKINGCONTRACT = "0x0A1282Ac30a5212E4356fc9CeCF2130eaCb8Db9D";
+const polygonscanapi = "https://api-testnet.polygonscan.com/api";
 const polygonscanapikey = "84ZBB5NVIMT5U6U6DTAFKCJTGJAE8IF5RQ";
 const apikey="84ZBB5NVIMT5U6U6DTAFKCJTGJAE8IF5RQ";
 const moralisapi = "https://deep-index.moralis.io/api/v2/";
 const moralisapikey = "7IHsNlGsGVzsqoqxOXCgnO1eqx3lZ5Xlh1A9GPLZCVkUZ7LLA4eUDdj9wdyknOoL";
 
 const nftpng = "https://ipfs.io/ipfs/QmQs9MyM262FjHVnuWtKX3CkWPzHzqJwyGwSiqCPTBJ5fR/";
-const openseaapi = "https://testnets-api.opensea.io/api/v1/assets";
 
+// const providerOptions = {
+//   binancechainwallet: {
+//     package: true,
+//   },
+//   walletconnect: {
+//     package: WalletConnectProvider,
+//     options: {
+//       infuraId: "3cf2d8833a2143b795b7796087fff369",
+//     },
+//   },
+//   walletlink: {
+//     package: WalletLink,
+//     options: {
+//       appName: "Net2Dev NFT Minter",
+//       infuraId: "3cf2d8833a2143b795b7796087fff369",
+//       rpc: "",
+//       chainId: 4,
+//       appLogoUrl: null,
+//       darkMode: true,
+//     },
+//   },
+// };
 
+const web3Modal = new Web3Modal({
+  network: "rinkeby",
+  theme: "dark",
+  cacheProvider: true,
+  // providerOptions,
+});
 
 class App extends Component {
   constructor() {
@@ -992,179 +1554,477 @@ class App extends Component {
     };
   }
 
+  handleModal() {
+    this.setState({ show: !this.state.show });
+  }
+
+  handleNFT(nftamount) {
+    this.setState({ outvalue: nftamount.target.value });
+  }
+
   async componentDidMount() {
     await axios
       .get(
-        endpoint +
-          `?module=stats&action=tokensupply&contractaddress=${NFTCONTRACT}&apikey=${apikey}`
+        polygonscanapi +
+          `?module=stats&action=tokensupply&contractaddress=${NFTCONTRACT}&apikey=${polygonscanapikey}`
       )
       .then((outputa) => {
         this.setState({
           balance: outputa.data,
         });
-        console.log("tokensupply", outputa.data);
+        console.log(outputa.data);
       });
-
-    // await axios
-    //   .get(
-    //     endpoint +
-    //       `?module=account&action=tokennfttx&contractaddress=${NFTCONTRACT}&page=1&offset=100&tag=latest&apikey=${apikey}`
-    //   )
-    //   .then((outputb) => {
-    //     const { result } = outputb.data;
-    //     this.setState({
-    //       nftdata: result,
-    //     });
-    //     console.log("tokennfttx", outputb.data);
-    //   });
-    // await axios.get((openseaapi + `?asset_contract_addresses=${NFTCONTRACT}&format=json&order_direction=asc&offset=0&limit=20`))
-		// .then(outputb => {
-		// 	const { assets } = outputb.data
-    //         this.setState({
-    //             nftdata:assets
-    //         })
-    //         console.log(outputb.data)
-    // });
-    let config = {'X-API-Key': moralisapikey, 'accept': 'application/json'};
-    await axios.get((moralisapi + `/nft/${NFTCONTRACT}/owners?chain=mumbai&format=decimal`), {headers: config})
-		.then(outputb => {
-			const { result } = outputb.data
-      console.log(result);
-      this.setState({
-          nftdata:result
-      })
-    });
-
+    let config = { "X-API-Key": moralisapikey, accept: "application/json" };
+    await axios
+      .get(
+        moralisapi + `/nft/${NFTCONTRACT}/owners?chain=mumbai&format=decimal`,
+        { headers: config }
+      )
+      .then((outputb) => {
+        const { result } = outputb.data;
+        this.setState({
+          nftdata: result,
+        });
+        console.log(outputb.data);
+      });
   }
-
-
-
 
   render() {
     const { balance } = this.state;
     const { nftdata } = this.state;
+    const { outvalue } = this.state;
 
     async function connectwallet() {
-      if (window.ethereum) {
-        var web3 = new Web3(window.ethereum);
-        await window.ethereum.send("eth_requestAccounts");
-        var accounts = await web3.eth.getAccounts();
-        account = accounts[0];
-        document.getElementById("wallet-address").textContent = account;
-        contract = new web3.eth.Contract(ABI, NFTCONTRACT);
-        vaultcontract = new web3.eth.Contract(VAULTABI, STAKINGCONTRACT);
-      }
+      var provider = await web3Modal.connect();
+      web3 = new Web3(provider);
+      await provider.send("eth_requestAccounts");
+      var accounts = await web3.eth.getAccounts();
+      account = accounts[0];
+      document.getElementById("wallet-address").textContent = account;
+      contract = new web3.eth.Contract(ABI, NFTCONTRACT);
+      vaultcontract = new web3.eth.Contract(VAULTABI, STAKINGCONTRACT);
     }
+
+    async function mint0() {
+      var _pid = "0";
+      var erc20address = await contract.methods.getCryptotoken(_pid).call();
+      var currency = new web3.eth.Contract(TOKENABI, erc20address);
+      var mintRate = await contract.methods.getNFTCost(_pid).call();
+      var _mintAmount = Number(outvalue);
+      var totalAmount = mintRate * _mintAmount;
+      currency.methods
+        .approve(NFTCONTRACT, String(totalAmount))
+        .send({ from: account })
+        .then(
+          await currency.methods
+            .transfer(NFTCONTRACT, String(totalAmount))
+            .send({ from: account })
+        )
+        .then(
+          contract.methods
+            .mintpid(account, _mintAmount, _pid)
+            .send({ from: account })
+        );
+    }
+    async function mint1() {
+      var _pid = "1";
+      var erc20address = await contract.methods.getCryptotoken(_pid).call();
+      var currency = new web3.eth.Contract(TOKENABI, erc20address);
+      var mintRate = await contract.methods.getNFTCost(_pid).call();
+      var _mintAmount = Number(outvalue);
+      var totalAmount = mintRate * _mintAmount;
+      currency.methods
+        .approve(NFTCONTRACT, String(totalAmount))
+        .send({ from: account })
+        .then(
+          await currency.methods
+            .transfer(NFTCONTRACT, String(totalAmount))
+            .send({ from: account })
+        )
+        .then(
+          contract.methods
+            .mintpid(account, _mintAmount, _pid)
+            .send({ from: account })
+        );
+    }
+
+    async function mint2() {
+      var _pid = "2";
+      var erc20address = await contract.methods.getCryptotoken(_pid).call();
+      var currency = new web3.eth.Contract(TOKENABI, erc20address);
+      var mintRate = await contract.methods.getNFTCost(_pid).call();
+      var _mintAmount = Number(outvalue);
+      var totalAmount = mintRate * _mintAmount;
+      currency.methods
+        .approve(NFTCONTRACT, String(totalAmount))
+        .send({ from: account })
+        .then(
+          await currency.methods
+            .transfer(NFTCONTRACT, String(totalAmount))
+            .send({ from: account })
+        )
+        .then(
+          contract.methods
+            .mintpid(account, _mintAmount, _pid)
+            .send({ from: account })
+        );
+    }
+
     async function mint() {
-      if (window.ethereum) {
-        var _mintAmount = Number(document.querySelector("[name=amount]").value);
-        var mintRate = Number(await contract.methods.cost().call());
-        var totalAmount = mintRate * _mintAmount;
-        contract.methods
-          .mint(account, _mintAmount)
-          .send({ from: account, value: String(totalAmount) });
-      }
+      var _mintAmount = Number(outvalue);
+      var mintRate = Number(await contract.methods.cost().call());
+      var totalAmount = mintRate * _mintAmount;
+      contract.methods
+        .mint(account, _mintAmount)
+        .send({ from: account, value: String(totalAmount) });
     }
-    
-    // async function stakeit() {
-    //   var tokenids = Number(document.querySelector("[name=stkid]").value);
-    //   vaultcontract.methods.stake([tokenids]).send({from: account});
-    // }
-    
-    // async function unstakeit() {
-    //   var tokenids = Number(document.querySelector("[name=stkid]").value);
-    //   vaultcontract.methods.unstake([tokenids]).send({from: account});
-    // }
-    
     async function claimit() {
       var tokenids = Number(document.querySelector("[name=stkid]").value);
-      vaultcontract.methods.claim([tokenids]).send({from: account});
+      vaultcontract.methods.claim([tokenids]).send({ from: account });
     }
-    
+
     async function verify() {
-      var getbalance = Number(await vaultcontract.methods.balanceOf(account).call());
-      document.getElementById('stakedbalance').textContent = getbalance; 
+      var getbalance = Number(
+        await vaultcontract.methods.balanceOf(account).call()
+      );
+      document.getElementById("stakedbalance").textContent = getbalance;
     }
-    
+
     async function enable() {
-      contract.methods.setApprovalForAll(STAKINGCONTRACT, true).send({from: account});
+      contract.methods
+        .setApprovalForAll(STAKINGCONTRACT, true)
+        .send({ from: account });
     }
-    
+
     async function rewardinfo() {
       var tokenid = Number(document.querySelector("[name=stkid]").value);
-      var rawearn = await vaultcontract.methods.earningInfo(account, ([tokenid])).call();
-      var earned =  String(rawearn).split(",")[0];
+      var rawearn = await vaultcontract.methods
+        .earningInfo(account, [tokenid])
+        .call();
+      var earned = String(rawearn).split(",")[0];
       var earnedrwd = Web3.utils.fromWei(earned);
-      // var rewards = Number(earnedrwd).toFixed(2);
-      var rewards = Number(earnedrwd);
-      document.getElementById('earned').textContent = rewards;
-    }    
+      var rewards = Number(earnedrwd).toFixed(2);
+      document.getElementById("earned").textContent = rewards;
+    }  
 
     return (
-      <div className="App">
-        <Button onClick={connectwallet} style={{marginBottom:"5px",marginTop:"5px",color:"#FFFFFF", marginRight:'3px'}}>Connect Wallet</Button>
-        <Button onClick={enable}>Enable Staking</Button>        
+      <div className="App" style={{ background: "black" }}>
+        <Button onClick={enable}>Enable Staking</Button>
+        <form
+          class="gradient col-lg-3 mt-5 mr-3"
+          style={{
+            borderRadius: "25px",
+            boxShadow: "1px 1px 15px #000000",
+            marginRight: "5px",
+          }}
+        >
+          <Button onClick={() => this.handleModal()}>I Want My NFTs</Button>
+        </form>
+        <Modal
+          size="lg"
+          className="border-0 d-flex"
+          style={{ backgroundColor: "#00000090" }}
+          show={this.state.show}
+          onHide={() => this.handleModal()}
+        >
+          <div className="container fluid">
+            <div className="row">
+              <div className="col">
+                <Modal.Body className="modal-style col-12 border-0">
+                  <div className="row">
+                    <div className="col mb-4">
+                      <Button
+                        className="btn mb-0"
+                        style={{ backgroundColor: "#ffffff10" }}
+                        onClick={connectwallet}
+                      >
+                        Connect Your Wallet
+                      </Button>
+                      <h1 style={{ fontWeight: "30" }}>NFT Minter</h1>
+                      <h3>{balance.result}/1000</h3>
+                    </div>
+                    <div className="col">
+                      <img
+                        src="art.png"
+                        className="mt-4 ml-4"
+                        width="240"
+                        height="240"
+                      />
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col xs={6} md={4}">
+                      <h6 style={{ fontSize: "20px" }}>Your Wallet Address</h6>
+                      <div
+                        className=""
+                        id="wallet-address"
+                        style={{
+                          color: "#39FF14",
+                          textShadow: "1px 1px 1px black",
+                          fontSize: "17px",
+                        }}
+                      >
+                        <label for="floatingInput">Please Connect Wallet</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <label style={{ fontWeight: "300", fontSize: "18px" }}>
+                      Select NFT Quantity
+                    </label>
+                    <ButtonToolbar aria-label="Toolbar">
+                      <ButtonGroup
+                        size="lg"
+                        className="me-3 mb-2"
+                        aria-label="First group"
+                        name="amount"
+                        style={{ boxShadow: "1px 1px 5px #000000" }}
+                        onClick={(nftamount) =>
+                          this.handleNFT(nftamount, "value")
+                        }
+                      >
+                        <Button value="1">1</Button>
+                        <Button value="2">2</Button>
+                        <Button value="3">3</Button>
+                        <Button value="4">4</Button>
+                        <Button value="5">5</Button>
+                      </ButtonGroup>
+                    </ButtonToolbar>
+                  </div>
+                  <div className="row mt-2">
+                    <div className="col xs={10} md={8}">
+                      <h6
+                        style={{
+                          fontFamily: "SF Pro Display",
+                          fontWeight: "300",
+                          fontSize: "18px",
+                        }}
+                      >
+                        Buy with your preferred crypto!
+                      </h6>
+                      <button
+                        style={{
+                          marginRight: "2px",
+                          backgroundColor: "transparent",
+                          border: "0.1",
+                        }}
+                        onClick={mint0}
+                      >
+                        <img src="n2dr-logo.png" width="90" height="90" alt="" />
+                      </button>
+                      <button
+                        style={{
+                          marginRight: "2px",
+                          backgroundColor: "transparent",
+                          border: "1",
+                        }}
+                        onClick={mint1}
+                      >
+                        <img src="usdt.png" width="90" height="90" />
+                      </button>
+                      <button
+                        style={{
+                          marginRight: "2px",
+                          backgroundColor: "transparent",
+                          border: "1",
+                        }}
+                        onClick={mint2}
+                      >
+                        <img src="ape.png" width="90" height="90" />
+                      </button>
+                      <button
+                        style={{
+                          marginRight: "2px",
+                          backgroundColor: "transparent",
+                          border: "1",
+                        }}
+                        onClick={mint}
+                      >
+                        <img src="matic.png" width="90" height="90" />
+                      </button>
+                    </div>
+                  </div>
+                  <div class="root">
+                    <div class="header">
+                      <div
+                        className="mt-2"
+                        style={{ fontSize: "20px", borderRadius: "14px" }}
+                      >
+                        N2DR NFT Staking Pools Active Rewards
+                      </div>
+                    </div>
+                    <table
+                      className="table table-bordered table-dark"
+                      style={{ borderRadius: "14px" }}
+                    >
+                      <thead className="thead-light">
+                        <tr>
+                          <th scope="col">Collection</th>
+                          <th scope="col">Rewards Per Day</th>
+                          <th scope="col">Exchangeable Items</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>N2D Bronze Collection</td>
+                          <td class="amount" data-test-id="rewards-summary-ads">
+                            <span class="amount">0.50</span>&nbsp;
+                            <span class="currency">N2DR</span>
+                          </td>
+                          <td class="exchange">
+                            <span class="amount">2</span>&nbsp;
+                            <span class="currency">NFTs/M</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>N2D Silver Collection</td>
+                          <td class="amount" data-test-id="rewards-summary-ac">
+                            <span class="amount">2.50</span>&nbsp;
+                            <span class="currency">N2DR</span>
+                          </td>
+                          <td class="exchange">
+                            <span class="amount">10</span>&nbsp;
+                            <span class="currency">NFTs/M</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>N2D Gold Collection</td>
+                          <td
+                            class="amount"
+                            data-test-id="rewards-summary-one-time"
+                          >
+                            <span class="amount">1</span>&nbsp;
+                            <span class="currency">N2DR+</span>
+                          </td>
+                          <td class="exchange">
+                            <span class="amount">25 NFTs/M or </span>
+                            <span class="currency">100 N2DR/M</span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <div class="header">
+                      <div
+                        className="mt-2"
+                        style={{ fontSize: "20px", borderRadius: "14px" }}
+                      >
+                        N2DR Token Stake Farms
+                      </div>
+                    </div>
+                    <table
+                      className="table table-bordered table-dark"
+                      style={{ borderRadius: "14px" }}
+                    >
+                      <thead className="thead-light">
+                        <tr>
+                          <th scope="col">Farm Pools</th>
+                          <th scope="col">Harvest Daily Earnings</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>Stake N2DR to Earn N2DR</td>
+                          <td class="amount" data-test-id="rewards-summary-ads">
+                            <span class="amount">0.01</span>&nbsp;
+                            <span class="currency">Per N2DR</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Stake N2DR to Earn N2DR+</td>
+                          <td class="amount" data-test-id="rewards-summary-ac">
+                            <span class="amount">0.005</span>&nbsp;
+                            <span class="currency">Per N2DR</span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div className="row mt-2">
+                    <div className="col xs={12} md={12}">
+                      <Button
+                        style={{ backgroundColor: "#ffffff10" }}
+                        className="mb-3"
+                        onClick={() => this.handleModal()}
+                      >
+                        Cancel
+                      </Button>
+                    </div>
+                  </div>
+                </Modal.Body>
+              </div>
+            </div>
+          </div>
+        </Modal>
         <div className="container">
           <div className="row">
             <form
-              class="gradient col-lg-5 mt-5"
+              class="gradient col-lg-3 mt-5 mr-3"
               style={{
                 borderRadius: "25px",
                 boxShadow: "1px 1px 15px #000000",
+                marginRight: "5px",
               }}
             >
-              <h4 style={{ color: "#FFFFFF" }}>Mint Portal</h4>
-              <h5 style={{ color: "#FFFFFF" }}>Please connect your wallet</h5>
+              <h4 style={{ color: "#FFFFFF" }}>Staking Vault</h4>
+              <h5 style={{ color: "#FFFFFF" }}>Verify Amount Staked</h5>
+              <Button onClick={verify}>Verify</Button>
               <div
-                class="card"
-                id="wallet-address"
-                style={{ marginTop: "3px", boxShadow: "1px 1px 4px #000000" }}
+                id="stakedbalance"
+                style={{
+                  marginTop: "5px",
+                  color: "#39FF14",
+                  fontWeight: "bold",
+                  textShadow: "1px 1px 2px #000000",
+                  fontSize: "35px",
+                }}
               >
-                <label for="floatingInput">Wallet Address</label>
-              </div>
-              <div
-                class="card"
-                style={{ marginTop: "3px", boxShadow: "1px 1px 4px #000000" }}
-              >
-                <input
-                  type="number"
-                  name="amount"
-                  defaultValue="1"
-                  min="1"
-                  max="5"
-                />
-                <label>Please select the amount of NFTs to mint.</label>
-                <Button onClick={mint}>Buy/Mint!</Button>
-              </div>
-              <label style={{ color: "#FFFFFF" }}>
-                Price 0.05 ETH each mint.
-              </label>
-              <h5 style={{ color: "white", textShadow: "1px 1px 3px #000000" }}>
-                {" "}
-                Tokens Minted so far= {balance.result}/1000
-              </h5>
-            </form>
-            <form class="gradient col-lg-3 mt-5 mr-3" style={{borderRadius:"25px",boxShadow:"1px 1px 15px #000000", marginRight:"5px"}}>
-              <h4 style={{color:"#FFFFFF"}}>Staking Vault</h4>
-              <h4 style={{color:"#FFFFFF"}}>NFT Vault Options</h4>
-            <h5 style={{color:"#FFFFFF"}}>Verify Amount Staked</h5>
-            <Button onClick={verify}>Verify</Button>
-            <div id='stakedbalance' style={{marginTop:"5px",color:"#39FF14",fontWeight:"bold",textShadow:"1px 1px 2px #000000", fontSize:"35px" }}>
                 <label for="floatingInput">NFT Balance</label>
-                </div>              
-            </form>
-            <form class="gradient col-lg-3 mt-5 mr-3" style={{borderRadius:"25px",boxShadow:"1px 1px 15px #000000", marginRight:"5px"}}>
-              <h5 style={{color:"#FFFFFF"}}> Staking Rewards</h5>
-              <Button onClick={rewardinfo}>Earned BM Rewards</Button>
-              <div id='earned' style={{color: "#39FF14",marginTop:"5px", fontSize:'25px',fontWeight:'bold',textShadow:"1px 1px 2px #000000"}}><p style={{fontSize:"20px"}}>Earned Tokens</p></div>
-              <input name="stkid" style={{color: "#39FF14",fontSize:'25px',fontWeight:'bold',textShadow:"1px 1px 2px #000000",width:'50px',backgroundColor:'#00000000'}}/>
-              <label className="col-4" style={{color:'white'}}>NFT ID</label>
-              <div className='col-12 mt-2'>
-                <div style={{color:'white'}}>Claim Rewards</div>
-                <Button className="mb-2" onClick={claimit}>Claim</Button>
               </div>
             </form>
-                        <div className="row items mt-3">
+            <form
+              class="gradient col-lg-3 mt-5 mr-3"
+              style={{
+                borderRadius: "25px",
+                boxShadow: "1px 1px 15px #000000",
+                marginRight: "5px",
+              }}
+            >
+              <h5 style={{ color: "#FFFFFF" }}> Staking Rewards</h5>
+              <Button onClick={rewardinfo}>Earned N2D Rewards</Button>
+              <div
+                id="earned"
+                style={{
+                  color: "#39FF14",
+                  marginTop: "5px",
+                  fontSize: "25px",
+                  fontWeight: "bold",
+                  textShadow: "1px 1px 2px #000000",
+                }}
+              >
+                <p style={{ fontSize: "20px" }}>Earned Tokens</p>
+              </div>
+              <input
+                name="stkid"
+                style={{
+                  color: "#39FF14",
+                  fontSize: "25px",
+                  fontWeight: "bold",
+                  textShadow: "1px 1px 2px #000000",
+                  width: "50px",
+                  backgroundColor: "#00000000",
+                }}
+              />
+              <label className="col-4" style={{ color: "white" }}>
+                NFT ID
+              </label>
+              <div className="col-12 mt-2">
+                <div style={{ color: "white" }}>Claim Rewards</div>
+                <Button className="mb-2" onClick={claimit}>
+                  Claim
+                </Button>
+              </div>
+            </form>
+            <div className="row items mt-3">
               <div
                 className="ml-3 mr-3"
                 style={{
@@ -1173,31 +2033,68 @@ class App extends Component {
                   columnGap: "10px",
                 }}
               >
-                {nftdata.map((assets, i) => {
+                {nftdata.map((result, i) => {
                   async function stakeit() {
-                    vaultcontract.methods.stake([assets.token_id]).send({from: account});
+                    vaultcontract.methods
+                      .stake([result.token_id])
+                      .send({ from: account });
                   }
                   async function unstakeit() {
-                    vaultcontract.methods.unstake([assets.token_id]).send({from: account});
-                  }                  
-
+                    vaultcontract.methods
+                      .unstake([result.token_id])
+                      .send({ from: account });
+                  }
                   return (
-                    <div className="card mt-3" key={i} >
+                    <div className="card mt-3" key={i}>
                       <div className="image-over">
-                        <img className="card-img-top"  src={nftpng + assets.token_id +'.png'} alt="" />
+                        <img
+                          className="card-img-top"
+                          src={nftpng + result.token_id + ".png"}
+                          alt=""
+                        />
                       </div>
                       <div className="card-caption col-12 p-0">
                         <div className="card-body">
-                          <h5 className="mb-0">BM Collection NFT #{assets.token_id}</h5>
-                          <h5 className="mb-0 mt-2">Location Status<p style={{color:"#39FF14",fontWeight:"bold",textShadow:"1px 1px 2px #000000"}}>{assets.owner_of}</p></h5>
+                          <h5 className="mb-0">
+                            Net2Dev Collection NFT #{result.token_id}
+                          </h5>
+                          <h5 className="mb-0 mt-2">
+                            Location Status
+                            <p
+                              style={{
+                                color: "#39FF14",
+                                fontWeight: "bold",
+                                textShadow: "1px 1px 2px #000000",
+                              }}
+                            >
+                              {result.owner_of}
+                            </p>
+                          </h5>
                           <div className="card-bottom d-flex justify-content-between">
-                              <input key={i} type="hidden" id='stakeid' value={assets.token_id} />
-                              <Button className="mb-2 mt-3 col-5" style={{marginLeft:'2px'}} onClick={stakeit}>Stake it</Button>
-                              <Button className="mb-2 mt-3 col-5" style={{marginLeft:'2px'}} onClick={unstakeit}>Unstake it</Button>
+                            <input
+                              key={i}
+                              type="hidden"
+                              id="stakeid"
+                              value={result.token_id}
+                            />
+                            <Button
+                              className="mb-2 mt-3 col-5"
+                              style={{ marginLeft: "2px" }}
+                              onClick={stakeit}
+                            >
+                              Stake it
+                            </Button>
+                            <Button
+                              className="mb-2 mt-3 col-5"
+                              style={{ marginLeft: "2px" }}
+                              onClick={unstakeit}
+                            >
+                              Unstake it
+                            </Button>
                           </div>
                         </div>
                       </div>
-                    </div>                    
+                    </div>
                   );
                 })}
               </div>
