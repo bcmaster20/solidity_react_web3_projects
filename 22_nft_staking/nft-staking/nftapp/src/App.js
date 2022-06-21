@@ -35,7 +35,7 @@ const providerOptions = {
 	walletlink: {
 		package: WalletLink, 
 		options: {
-		  appName: "Net2Dev NFT Minter", 
+		  appName: "BM NFT Minter", 
 		  infuraId: infuraId,
 		  rpc: "", 
 		  chainId: 4, 
@@ -457,7 +457,7 @@ const refreshPage = ()=>{
         <div className='col'>
           <body className='nftstaker border-0'>
             <form  style={{ fontFamily: "SF Pro Display" }} >
-              <h2 style={{ borderRadius: '14px', fontWeight: "300", fontSize: "25px" }}>N2DR NFT Staking Vault </h2>
+              <h2 style={{ borderRadius: '14px', fontWeight: "300", fontSize: "25px" }}>BM NFT Staking Vault </h2>
               <h6 style={{ fontWeight: "300" }}>First time staking?</h6>
               <Button className="btn" onClick={enable} style={{ backgroundColor: "#ffffff10", boxShadow: "1px 1px 5px #000000" }} >Authorize Your Wallet</Button>
               <div className="row px-3">
