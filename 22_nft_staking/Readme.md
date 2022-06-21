@@ -115,13 +115,13 @@ npm i magic-sdk
 ```
 
 ### Reference
- - [SmartContract](https://www.youtube.com/watch?v=-48_hdo9_gg)
- - [FullBlockchain] (https://github.com/smartcontractkit/full-blockchain-solidity-course-js)
- - [SolidityExample] (https://solidity-by-example.org/defi/staking-rewards/)
- - [FrontEnd](https://www.youtube.com/watch?v=5vhVInexaUI)
- - [Tailwindcss For Nextjs](https://tailwindcss.com/docs/guides/nextjs)
-
-
+- [SmartContract](https://www.youtube.com/watch?v=-48_hdo9_gg)
+- [FullBlockchain](https://github.com/smartcontractkit/full-blockchain-solidity-course-js)
+- [SolidityExample](https://solidity-by-example.org/defi/staking-rewards/)
+- [FrontEnd](https://www.youtube.com/watch?v=5vhVInexaUI)
+- [Tailwindcss For Nextjs](https://tailwindcss.com/docs/guides/nextjs)
+- [Web3Modal](https://www.youtube.com/watch?v=uwG97RO87uI)
+- [CssGradient](https://cssgradient.io/)
 ## 2. NFT Token Staking Project Create
 ### Hardhat Project Init
 ```
@@ -329,4 +329,18 @@ npm i @walletconnect/web3-provider
 npm i sf-font
 npm i @web3-react/walletlink-connector
 npm i walletlink
+```
+
+## Front React NFT APP (nftapp)
+```
+npx create-react-app nftapp
+cd nftapp
+npm i bootstrap@5.2.0-beta1
+npm i react-bootstrap
+npm i sf-font
+npm i web3modal
+npm i web3
+npm i @walletconnect/web3-provider
+npm i walletlink
+
 ```
