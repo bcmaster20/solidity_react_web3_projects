@@ -350,4 +350,6 @@ npm i web3
 npm i @walletconnect/web3-provider
 npm i walletlink
 
+.env
+SKIP_PREFLIGHT_CHECK=true
 ```
