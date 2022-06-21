@@ -7,7 +7,7 @@ import axios from 'axios';
 import ABI from './ABI.json';
 import VAULTABI from './VAULTABI.json';
 import TOKENABI from './TOKENABI.json';
-import { NFTCONTRACT, STAKINGCONTRACT, polygonscanapi, moralisapi, nftpng, moralisapikey, polygonscanapikey, infuraId } from './config';
+import { NFTCONTRACT, STAKINGCONTRACT, polygonscanapi, moralisapi, nftpng, moralisapikey, polygonscanapikey, infuraId, alchemy_url } from './config';
 import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import WalletLink from "walletlink";
@@ -19,7 +19,7 @@ var contract = null;
 var vaultcontract = null;
 var web3 = null;
 
-const Web3Alc = createAlchemyWeb3("https://polygon-mumbai.g.alchemy.com/v2/V6S2EMJxSUzq8SRx9lCfej62xX5X_atq");
+const Web3Alc = createAlchemyWeb3(alchemy_url);
 
 
 const providerOptions = {
@@ -161,33 +161,59 @@ render() {
     var rawnfts = await vaultcontract.methods.tokensOfOwner(account).call();
     const arraynft = Array.from(rawnfts.map(Number));
     const tokenid = arraynft.filter(Number);
-    var rwdArray = [];
-    tokenid.forEach(async (id) => {
-      var rawearn = await vaultcontract.methods.earningInfo(account, [id]).call();
-      var array = Array.from(rawearn.map(Number));
-      array.forEach(async (item) => {
-        var earned = String(item).split(",")[0];
-        var earnedrwd = Web3.utils.fromWei(earned);
-        var rewardx = Number(earnedrwd).toFixed(2);
-        var numrwd = Number(rewardx);
-        rwdArray.push(numrwd)
-      });
-    });
-    function delay() {
-      return new Promise(resolve => setTimeout(resolve, 300));
-    }
-    async function delayedLog(item) {
-      await delay();
-      var sum = item.reduce((a, b) => a + b, 0);
-      var formatsum = Number(sum).toFixed(2);
-      document.getElementById('earned').textContent = formatsum;
-    }
-    async function processArray(rwdArray) {
-      for (const item of rwdArray) {
-        await delayedLog(item);
-      }
-    }
-    return processArray([rwdArray]);
+
+    var rawearn = await vaultcontract.methods.earningInfo(account, tokenid).call();
+    
+    console.log(Number(rawearn[0]));
+
+    // var formatsum = Number();
+    var earnedrwd = Web3.utils.fromWei(rawearn[0]);
+    var rewardx = Number(earnedrwd).toFixed(3);
+    //     var numrwd = Number(rewardx);
+        
+    document.getElementById('earned').textContent = rewardx;
+    
+
+    return;
+    // console.log("---tokenid = ", tokenid)
+    // var rwdArray = [];
+    
+    // tokenid.forEach(async (id) => {
+    //   var rawearn = await vaultcontract.methods.earningInfo(account, [id]).call();
+    //   console.log(rawearn);
+    //   var array = Array.from(rawearn.map(Number));
+    //   console.log(array);
+    //   array.forEach(async (item) => {
+    //     var earned = String(item).split(",")[0];
+    //     var earnedrwd = Web3.utils.fromWei(earned);
+    //     var rewardx = Number(earnedrwd).toFixed(2);
+    //     var numrwd = Number(rewardx);
+    //     rwdArray.push(numrwd)
+    //   });
+    // });
+    // console.log("111");
+    // console.log(rwdArray);
+    // console.log("222");
+
+    // function delay() {
+    //   return new Promise(resolve => setTimeout(resolve, 300));
+    // }
+    // async function delayedLog(item) {
+    //   await delay();
+    //   var sum = item.reduce((a, b) => a + b, 0);
+    //   var formatsum = Number(sum).toFixed(2);
+    //   document.getElementById('earned').textContent = formatsum;
+    // }
+
+    // async function processArray(rwdArray) {
+    //   console.log("processArray");
+    //   console.log(rwdArray);
+    //   for (const item of rwdArray) {
+    //     await delayedLog(item);
+    //   }
+    // }
+
+    // return processArray([rwdArray]);
   }
   async function claimit() {
     var rawnfts = await vaultcontract.methods.tokensOfOwner(account).call();
@@ -260,9 +286,9 @@ render() {
         var maxPriority = Number(tip);
         var maxFee = maxPriority + baseFee;
         currency.methods.approve(NFTCONTRACT, String(totalAmount))
-					  .send({
-						  from: account})
-              .then(currency.methods.transfer(NFTCONTRACT, String(totalAmount))
+					  .send({from: account})
+            .then(
+              currency.methods.transfer(NFTCONTRACT, String(totalAmount))
 						  .send({
 							  from: account,
 							  maxFeePerGas: maxFee,
@@ -292,7 +318,53 @@ render() {
             }));
     });
   });
-}
+  }
+  async function mint1() {
+    var _pid = "1";
+    var erc20address = await contract.methods.getCryptotoken(_pid).call();
+    var currency = new web3.eth.Contract(TOKENABI, erc20address);
+    var mintRate = await contract.methods.getNFTCost(_pid).call();
+    var _mintAmount = Number(outvalue);
+    var totalAmount = mintRate * _mintAmount;
+    await Web3Alc.eth.getMaxPriorityFeePerGas().then((tip) => {
+      Web3Alc.eth.getBlock('pending').then((block) => {
+        var baseFee = Number(block.baseFeePerGas);
+        var maxPriority = Number(tip);
+        var maxFee = maxPriority + baseFee;
+        currency.methods.approve(NFTCONTRACT, String(totalAmount))
+					  .send({from: account})
+            .then(
+              currency.methods.transfer(NFTCONTRACT, String(totalAmount))
+						  .send({
+							  from: account,
+							  maxFeePerGas: maxFee,
+							  maxPriorityFeePerGas: maxPriority
+						  },
+              async function (error, transactionHash) {
+                console.log("Transfer Submitted, Hash: ", transactionHash)
+                let transactionReceipt = null
+                while (transactionReceipt == null) {
+                  transactionReceipt = await web3.eth.getTransactionReceipt(transactionHash);
+                  await sleep(expectedBlockTime)
+                }
+                window.console = {
+                  log: function (str) {
+                    var out = document.createElement("div");
+                    out.appendChild(document.createTextNode(str));
+                    document.getElementById("txout").appendChild(out);
+                  }
+                }
+                console.log("Transfer Complete", transactionReceipt);
+                contract.methods.mintpid(account, _mintAmount, _pid)
+                .send({
+                  from: account,
+                  maxFeePerGas: maxFee,
+                  maxPriorityFeePerGas: maxPriority
+                });
+            }));
+    });
+  });
+  }
 const refreshPage = ()=>{
   window.location.reload();  
 }
@@ -301,21 +373,21 @@ const refreshPage = ()=>{
     <div className="App nftapp">
         <nav class="navbar navbarfont navbarglow navbar-expand-md navbar-dark bg-dark mb-4">
           <div class="container-fluid" style={{ fontFamily: "SF Pro Display" }}>
-            <a class="navbar-brand px-5" style={{ fontWeight: "800", fontSize: '25px' }} href="#"></a><img src="n2d-logo.png" width="7%" />
+            <a class="navbar-brand px-5" style={{ fontWeight: "800", fontSize: '25px' }} href="#"></a><img src="logo.png" width="7%" />
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
               <ul class="navbar-nav me-auto mb-2 px-3 mb-md-0" style={{ fontSize: "25px" }}>
                 <li class="nav-item">
-                  <a class="nav-link active" aria-current="page" href="#">Dashboard</a>
+                  <a class="nav-link active" aria-current="page" href="#">NFT Staking</a>
                 </li>
-                <li class="nav-item">
+                {/* <li class="nav-item">
                   <a class="nav-link" href="#">List NFTs</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link">Bridge NFTs</a>
-                </li>
+                </li> */}
               </ul>
             </div>
           </div>
@@ -360,11 +432,11 @@ const refreshPage = ()=>{
             <div className="row px-2 pb-2 row-style">
               <div className="col ">
                 <Button className="button-style" onClick={mint0} style={{ border: "0.2px", borderRadius: "14px", boxShadow: "1px 1px 5px #000000" }}>
-                  <img src={"n2dr-logo.png"} width="100%" />
+                  <img src={"bmr.png"} width="100%" />
                 </Button>
               </div>
               <div className="col">
-                <Button className="button-style" style={{ border: "0.2px", borderRadius: "14px", boxShadow: "1px 1px 5px #000000" }}>
+                <Button className="button-style" onClick={mint1}  style={{ border: "0.2px", borderRadius: "14px", boxShadow: "1px 1px 5px #000000" }}>
                   <img src="usdt.png" width="70%" />
                 </Button>
               </div>
@@ -427,7 +499,7 @@ const refreshPage = ()=>{
                   </div>
                 </div>
                 <div className="row px-4 pt-2">
-                  <div class="header">
+                  {/* <div class="header">
                     <div style={{ fontSize: '25px', borderRadius: '14px', color: "#ffffff", fontWeight: "300" }}>N2DR NFT Staking Pool Active Rewards</div>
                     <table className='table px-3 table-bordered table-dark'>
                       <thead className='thead-light'>
@@ -492,7 +564,7 @@ const refreshPage = ()=>{
                         </tbody>
                       </table>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
             </form>
           </body>
@@ -500,15 +572,15 @@ const refreshPage = ()=>{
       </div>
       <div className='row nftportal mt-3'>
         <div className='col mt-4 ml-3'>
-        <img src="polygon.png" width={'60%'}></img>
-      </div>
-      <div className='col'>
-        <h1 className='n2dtitlestyle mt-3'>Your NFT Portal</h1>
-      <Button onClick={refreshPage} style={{ backgroundColor: "#000000", boxShadow: "1px 1px 5px #000000" }}>Refresh NFT Portal</Button>
-      </div>
-      <div className='col mt-3 mr-5'>
-      <img src="ethereum.png" width={'60%'}></img>
-      </div>
+          <img src="polygon.png" width={'60%'}></img>
+        </div>
+        <div className='col'>
+          <h1 className='n2dtitlestyle mt-3'>Your NFT Portal</h1>
+          <Button onClick={refreshPage} style={{ backgroundColor: "#000000", boxShadow: "1px 1px 5px #000000" }}>Refresh NFT Portal</Button>
+        </div>
+        {/* <div className='col mt-3 mr-5'>
+          <img src="ethereum.png" width={'60%'}></img>
+        </div> */}
       </div>
       </div>
     )
