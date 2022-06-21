@@ -380,7 +380,7 @@ const refreshPage = ()=>{
             <div class="collapse navbar-collapse" id="navbarCollapse">
               <ul class="navbar-nav me-auto mb-2 px-3 mb-md-0" style={{ fontSize: "25px" }}>
                 <li class="nav-item">
-                  <a class="nav-link active" aria-current="page" href="#">NFT Staking</a>
+                  <a class="nav-link active" aria-current="page" href="#">NFT Staking( Polygon Mumbai )</a>
                 </li>
                 {/* <li class="nav-item">
                   <a class="nav-link" href="#">List NFTs</a>

@@ -293,18 +293,25 @@ NFTStaking to 0x0A1282Ac30a5212E4356fc9CeCF2130eaCb8Db9D
 ----- Token Three BMRewards, USDT, APE ----
 1. Verify : BMRewards
  npx hardhat verify --contract contracts/BMRewards.sol:BMRewards --network mumbai 0x8e9CB9c8F54c6Db908731076e9A48903B849d585
+ https://mumbai.polygonscan.com/address/0x8e9CB9c8F54c6Db908731076e9A48903B849d585#code
+
 2. Verify : USDT
  npx hardhat verify --contract contracts/USDT.sol:USDT --network mumbai 0xbB5B370bb1F7012492162aae57C856bCc84E8a07
+ https://mumbai.polygonscan.com/address/0xbB5B370bb1F7012492162aae57C856bCc84E8a07#code
+
 3. Verify : APE
  npx hardhat verify --contract contracts/APE.sol:APE --network mumbai 0xB295A2fb002763bd5d1cf6E1821D2cd582993AB7
+https://mumbai.polygonscan.com/address/0xB295A2fb002763bd5d1cf6E1821D2cd582993AB7#code
 
 ----- Collection ----
 4. Verify : Collection
  npx hardhat verify --contract contracts/Collection.sol:Collection --network mumbai 0x41AbEA025c7BE5175b1C0dB105428AD0173ABBd8
+https://mumbai.polygonscan.com/address/0x41AbEA025c7BE5175b1C0dB105428AD0173ABBd8#code
 
 ----- Staking ----
 5. Verify : NFTStaking
  npx hardhat verify --contract contracts/NFTStaking.sol:NFTStaking --network mumbai 0x0A1282Ac30a5212E4356fc9CeCF2130eaCb8Db9D 0x41AbEA025c7BE5175b1C0dB105428AD0173ABBd8 0x8e9CB9c8F54c6Db908731076e9A48903B849d585
+https://mumbai.polygonscan.com/address/0x0A1282Ac30a5212E4356fc9CeCF2130eaCb8Db9D#code
 
 ----- Initialize and test ----
 
