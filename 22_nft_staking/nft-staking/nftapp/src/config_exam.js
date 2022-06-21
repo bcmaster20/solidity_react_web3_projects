@@ -1,0 +1,9 @@
+export const NFTCONTRACT = "";
+export const STAKINGCONTRACT = "";
+export const polygonscanapi = "https://api-testnet.polygonscan.com/api";
+export const polygonscanapikey = "";
+export const moralisapi = "https://deep-index.moralis.io/api/v2";
+export const moralisapikey = "";
+export const nftpng = "";
+export const infuraId = "";
+export const alchemy_url = "";
