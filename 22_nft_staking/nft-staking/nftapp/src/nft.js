@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react'
 import 'sf-font';
 import axios from 'axios';
 import VAULTABI from './VAULTABI.json';
-import { NFTCONTRACT, STAKINGCONTRACT, moralisapi, nftpng } from './config';
+import { NFTCONTRACT, STAKINGCONTRACT, polygonscanapi, moralisapi, nftpng, moralisapikey, polygonscanapikey, infuraId, alchemy_url } from './config';
 import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import WalletLink from "walletlink";
@@ -16,7 +16,6 @@ var web3 = null;
 var account = null;
 var vaultcontract = null;
 
-const moralisapikey = "2VBV4vaCLiuGu6Vu7epXKlFItGe3jSPON8WV4CrXKYaNBEazEUrf1xwHxbrIo1oM";
 const providerOptions = {
 	binancechainwallet: {
 		package: true
@@ -24,14 +23,14 @@ const providerOptions = {
 	  walletconnect: {
 		package: WalletConnectProvider,
 		options: {
-		  infuraId: "3cf2d8833a2143b795b7796087fff369"
+		  infuraId: "infuraId"
 		}
 	},
 	walletlink: {
 		package: WalletLink, 
 		options: {
-		  appName: "Net2Dev NFT Minter", 
-		  infuraId: "3cf2d8833a2143b795b7796087fff369",
+		  appName: "BM NFT Minter", 
+		  infuraId: "infuraId",
 		  rpc: "", 
 		  chainId: 4, 
 		  appLogoUrl: null, 
