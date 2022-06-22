@@ -88,7 +88,7 @@ export default function NFT() {
     }))
       getNfts(apicall)
       getStk(nftstk)
-      console.log(apicall);
+      // console.log(apicall);
       setLoadingState('loaded')
     } 
     if (loadingState === 'loaded' && !apicall.length) 

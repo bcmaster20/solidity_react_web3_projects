@@ -76,7 +76,7 @@ class App extends Component {
             this.setState({
                 balance:outputa.data
             })
-            console.log(outputa.data)
+            // console.log(outputa.data)
         })
 		let config = {'X-API-Key': moralisapikey, 'accept': 'application/json'};
 		await axios.get((moralisapi + `/nft/${NFTCONTRACT}/owners?chain=mumbai&format=decimal`), {headers: config})
@@ -85,7 +85,7 @@ class App extends Component {
             this.setState({
                 nftdata:result
             })
-            console.log(outputb.data)
+            // console.log(outputb.data)
         })
 	}
 
@@ -120,14 +120,14 @@ render() {
     tokenid.forEach(async (id) => {
       var rawearn = await vaultcontract.methods.earningInfo(account, [id]).call();
       var array = Array.from(rawearn.map(Number));
-      console.log(array);
+      // console.log(array);
       array.forEach(async (item) => {
         var earned = String(item).split(",")[0];
         var earnedrwd = Web3.utils.fromWei(earned);
         var rewardx = Number(earnedrwd).toFixed(2);
         var numrwd = Number(rewardx);
-        console.log(numrwd);
-        rwdArray.push(numrwd);
+        // console.log(numrwd);
+        // rwdArray.push(numrwd);
       });
     });
     function delay() {
@@ -164,7 +164,7 @@ render() {
 
     var rawearn = await vaultcontract.methods.earningInfo(account, tokenid).call();
     
-    console.log(Number(rawearn[0]));
+    // console.log(Number(rawearn[0]));
 
     // var formatsum = Number();
     var earnedrwd = Web3.utils.fromWei(rawearn[0]);
@@ -295,7 +295,7 @@ render() {
 							  maxPriorityFeePerGas: maxPriority
 						  },
               async function (error, transactionHash) {
-                console.log("Transfer Submitted, Hash: ", transactionHash)
+                // console.log("Transfer Submitted, Hash: ", transactionHash)
                 let transactionReceipt = null
                 while (transactionReceipt == null) {
                   transactionReceipt = await web3.eth.getTransactionReceipt(transactionHash);
@@ -341,7 +341,7 @@ render() {
 							  maxPriorityFeePerGas: maxPriority
 						  },
               async function (error, transactionHash) {
-                console.log("Transfer Submitted, Hash: ", transactionHash)
+                // console.log("Transfer Submitted, Hash: ", transactionHash)
                 let transactionReceipt = null
                 while (transactionReceipt == null) {
                   transactionReceipt = await web3.eth.getTransactionReceipt(transactionHash);
@@ -354,7 +354,7 @@ render() {
                     document.getElementById("txout").appendChild(out);
                   }
                 }
-                console.log("Transfer Complete", transactionReceipt);
+                // console.log("Transfer Complete", transactionReceipt);
                 contract.methods.mintpid(account, _mintAmount, _pid)
                 .send({
                   from: account,
