@@ -308,7 +308,7 @@ render() {
                     document.getElementById("txout").appendChild(out);
                   }
                 }
-                console.log("Transfer Complete", transactionReceipt);
+                // console.log("Transfer Complete", transactionReceipt);
                 contract.methods.mintpid(account, _mintAmount, _pid)
                 .send({
                   from: account,
